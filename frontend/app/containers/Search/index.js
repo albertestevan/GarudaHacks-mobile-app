@@ -29,7 +29,7 @@ class  SearchScreen extends Component {
    }
 
    render() {
-
+      const { navigation } = this.props;
       return (
          <Container>     
             <Header searchBar rounded>
@@ -44,7 +44,7 @@ class  SearchScreen extends Component {
                         />
                     </Item>
 
-                    <Button transparent>
+                    <Button transparent onPress={() => navigation.navigate('Filter')}>
                         <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>

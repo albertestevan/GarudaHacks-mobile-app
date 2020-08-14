@@ -124,8 +124,8 @@ class  ProfileScreen extends Component {
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
 
 
-                <Text style={globalstyles.description}>Bundles</Text>
-                <Text style={globalstyles.descriptionText}>Sample Bundles</Text>
+                <Text style={globalstyles.description}>Plans</Text>
+                <Text style={globalstyles.descriptionText}>Sample Plans</Text>
          
             </Content>
         

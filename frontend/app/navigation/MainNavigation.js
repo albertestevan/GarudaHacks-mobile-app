@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 import HomeNavigator from './HomeNavigation';
-import SearchScreen from '../containers/Search';
+import SearchNavigator from './SearchNavigation';
 import ProfileNavifator from './ProfileNavigation';
 
 import { TouchableOpacity, View, Text, StyleSheet, AsyncStorage} from "react-native";
@@ -62,7 +62,7 @@ class MainNavigator extends Component {
             }}
           >
              <Tabs.Screen name="Home" component={HomeNavigator} />
-              <Tabs.Screen name="Search" component={SearchScreen}/>
+              <Tabs.Screen name="Search" component={SearchNavigator}/>
               <Tabs.Screen name="Profile" component={ProfileNavifator}/>
           </Tabs.Navigator>
       </NavigationContainer>
