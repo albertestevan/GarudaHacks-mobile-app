@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, Button} from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, Button, ScrollView } from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right } from 'native-base';
 
-import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
 
@@ -20,16 +19,6 @@ class  ProfileScreen extends Component {
         selectedTags: [],
       };
     }
-
-
-    selectComponent = (activePage) => () => this.setState({activePage})
-
-    renderComponent = () => {
-        if(this.state.activePage === 1)
-          return <Component1/> //... Your Component 1 to display
-        else 
-          return <Component2/> //... Your Component 2 to display
-      }
 
     tags = [
         {
@@ -79,8 +68,8 @@ class  ProfileScreen extends Component {
       return (
          <Container>
             <ProfileHeader navigation={this.props.navigation} screenTitle="Profile"/>        
-
-            <Content  scrollEnabled={false} style={{
+            <ScrollView>
+            <Content style={{
             borderBottomWidth:2, 
             marginTop: 10, 
             borderColor: '#c0c0c0'}}>
@@ -94,7 +83,6 @@ class  ProfileScreen extends Component {
                   <Text style={globalstyles.name}>Jessica Hartanto Estevan</Text>
                </View>
                <Content 
-                scrollEnabled={false}
                contentContainerStyle={{ 
                   flexDirection: 'row',
                   marginBottom: 0
@@ -119,30 +107,14 @@ class  ProfileScreen extends Component {
                </Content>
             </Content>
             <Content  scrollEnabled={true}>
-                  <Text style={globalstyles.description}>Description</Text>
-                  <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
-                  If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
+                <Text style={globalstyles.description}>Price Range</Text>
+                <Text style={globalstyles.descriptionText}>500.000-1.000.000</Text>
+               
 
-                  <Text style={globalstyles.description}>Description</Text>
-                                 <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
-                  If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
+                <Text style={globalstyles.description}>Tags</Text>
 
-                  <Text style={globalstyles.description}>Description</Text>
-                                 <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
-                  If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
-               {/* </ScrollView> */}
-               <Content contentContainerStyle={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-               }}
-               padder>
-
-               <Text>ProfileScreen</Text>
-               <Text>Tags</Text>
-
-                  <Text>
-                     Selected: {this.state.selectedTags.map(tag => `${tag} `)}
+                  <Text style={globalstyles.descriptionText}>
+                     {/* Selected: {this.state.selectedTags.map(tag => `${tag} `)} */}
                   </Text>
                   <TagSelector
                      // maxHeight={70}
@@ -150,11 +122,14 @@ class  ProfileScreen extends Component {
                      selectedTagStyle = {globalstyles.tagSelected}
                      tags={this.tags}
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
+
+
+                <Text style={globalstyles.description}>Bundles</Text>
+                <Text style={globalstyles.descriptionText}>Sample Bundles</Text>
          
-               </Content>
             </Content>
         
-
+            </ScrollView>
          </Container>
                   
       )
