@@ -120,8 +120,6 @@ class  ProfileScreen extends Component {
                </Content>
             </Content>
             <Content  scrollEnabled={true}>
-               {/* <View style={{flexDirection: 'row', borderBottomWidth:2, marginTop: 10, borderColor: '#c0c0c0'}}></View> */}
-               {/* <ScrollView> */}
                   <Text style={styles.description}>Description</Text>
                   <Text style={styles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
@@ -135,27 +133,27 @@ class  ProfileScreen extends Component {
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
                {/* </ScrollView> */}
                <Content contentContainerStyle={{
-               flex: 1,
-               alignItems: 'center',
-               justifyContent: 'center'
-            }}
-            padder>
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+               }}
+               padder>
 
-            <Text>ProfileScreen</Text>
-            <Text>Tags</Text>
+               <Text>ProfileScreen</Text>
+               <Text>Tags</Text>
 
-                <Text>
-                    Selected: {this.state.selectedTags.map(tag => `${tag} `)}
-                </Text>
-                <TagSelector
-                    // maxHeight={70}
-                    // containerStyle = {styles.tagSelectorContainer}
-                    selectedTagStyle = {styles.tagSelected}
-                    tags={this.tags}
-                    onChange={(selected) => this.setState({ selectedTags: selected })} />
-        
-            </Content>
+                  <Text>
+                     Selected: {this.state.selectedTags.map(tag => `${tag} `)}
+                  </Text>
+                  <TagSelector
+                     // maxHeight={70}
+                     // containerStyle = {styles.tagSelectorContainer}
+                     selectedTagStyle = {styles.tagSelected}
+                     tags={this.tags}
+                     onChange={(selected) => this.setState({ selectedTags: selected })} />
+         
                </Content>
+            </Content>
         
 
          </Container>
