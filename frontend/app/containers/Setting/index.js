@@ -1,8 +1,7 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, StyleSheet, Button} from 'react-native'
+import { TouchableOpacity, View, Text, StyleSheet} from 'react-native'
 
-import { Icon, Container, Header, Content, Left} from 'native-base'
-
+import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base'
 
 
 const SettingScreen = ({ navigation }) => {
@@ -11,12 +10,27 @@ const SettingScreen = ({ navigation }) => {
       <Container>
 
          <Content contentContainerStyle={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
          }}>
+            <List listItemPadding={40}>
+                <ListItem onPress={() => {navigation.navigate('EditProfile')}} selected>
+                    <Left>
+                        <Text>Edit Profile</Text>
+                    </Left>
+                    <Right>
+                        <Icon name="arrow-forward" />
+                    </Right>
+                </ListItem>
+            
 
-         <Text>SettingScreen</Text>
+                <ListItem onPress={() => {navigation.navigate('EditProfile')}} selected>
+                    <Left>
+                        <Text>Edit Profile</Text>
+                    </Left>
+                    <Right>
+                        <Icon name="arrow-forward" />
+                    </Right>
+                </ListItem>
+            </List>
 
          </Content>
       </Container>
