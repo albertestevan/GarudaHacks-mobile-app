@@ -7,24 +7,61 @@ import ProfileHeader from '../../components/ProfileHeader';
 
 import globalstyles from '../../globalstyle';
 
+import TagSelector from 'react-native-tag-selector';
+
+
 
 class  ProfileScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
-        activePage:1
+        selectedTags: [],
       };
     }
 
-    selectComponent = (activePage) => () => this.setState({activePage})
+    tags = [
+        {
+            id: 'automotive',
+            name: 'Automotive'
+        },
+        {
+            id: 'beauty',
+            name: 'Beauty'
+        },
+        {
+            id: 'tech',
+            name: 'Tech'
+        },
+        {
+            id: 'culinary',
+            name: 'Culinary'
+        },
+        {
+            id: 'fashion',
+            name: 'Fashion'
+        },
+        {
+            id: 'travel',
+            name: 'Travel'
+        },
+        {
+            id: 'diet',
+            name: 'Diet'
+        },
+        {
+            id: 'fitness',
+            name: 'Fitness'
+        },
+        {
+            id: 'financial',
+            name: 'Financial'
+        }
+    ]
 
-    renderComponent = () => {
-        if(this.state.activePage === 1)
-          return <Component1/> //... Your Component 1 to display
-        else 
-          return <Component2/> //... Your Component 2 to display
-      }
-      
+    componentDidUpdate(){
+
+    }
+
    render() {
     const {navigation} = this.props;
       return (
@@ -35,17 +72,22 @@ class  ProfileScreen extends Component {
                flex: 1,
                alignItems: 'center',
                justifyContent: 'center'
-            }}>
+            }}
+            padder>
 
             <Text>ProfileScreen</Text>
-            <Text>{this.state.activePage}</Text>
-            <Segment>
-                    <Button active={this.state.activePage === 1}
-                        onPress={this.selectComponent(1)}><Text style={this.state.activePage === 1 ? globalstyles.white : globalstyles.black}>Seeking Endorsement</Text></Button>
-                    <Button  active={this.state.activePage === 2}
-                        onPress= {this.selectComponent(2)}><Text style={this.state.activePage === 2 ? globalstyles.white : globalstyles.black}>Endorser</Text></Button>
-            </Segment>
+            <Text>Tags</Text>
 
+                <Text>
+                    Selected: {this.state.selectedTags.map(tag => `${tag} `)}
+                </Text>
+                <TagSelector
+                    // maxHeight={70}
+                    // containerStyle = {styles.tagSelectorContainer}
+                    selectedTagStyle = {styles.tagSelected}
+                    tags={this.tags}
+                    onChange={(selected) => this.setState({ selectedTags: selected })} />
+        
             </Content>
          </Container>
                   
@@ -53,3 +95,15 @@ class  ProfileScreen extends Component {
    }
 }
 export default ProfileScreen;
+
+const styles = StyleSheet.create({
+    // tagSelectorContainer: {
+    //   flex: 1,
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    // }
+    // tagSelected: {
+    //   color : "blue"
+    // }
+
+  });
