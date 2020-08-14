@@ -1,21 +1,30 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, ScrollView} from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, Button} from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right } from 'native-base';
 
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
+
+import globalstyles from '../../globalstyle';
 class  ProfileScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
+        activePage:1
       };
     }
 
-   componentDidMount() {
-      
-   }
+
+    selectComponent = (activePage) => () => this.setState({activePage})
+
+    renderComponent = () => {
+        if(this.state.activePage === 1)
+          return <Component1/> //... Your Component 1 to display
+        else 
+          return <Component2/> //... Your Component 2 to display
+      }
 
    render() {
 
@@ -77,6 +86,12 @@ class  ProfileScreen extends Component {
                                  <Text style={styles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
                {/* </ScrollView> */}
+               <Segment>
+                    <Button active={this.state.activePage === 1}
+                        onPress={this.selectComponent(1)}><Text style={this.state.activePage === 1 ? globalstyles.white : globalstyles.black}>Seeking Endorsement</Text></Button>
+                    <Button  active={this.state.activePage === 2}
+                        onPress= {this.selectComponent(2)}><Text style={this.state.activePage === 2 ? globalstyles.white : globalstyles.black}>Endorser</Text></Button>
+            </Segment>
                </Content>
          </Container>
                   
