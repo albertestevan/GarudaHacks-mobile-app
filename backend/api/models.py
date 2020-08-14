@@ -20,26 +20,38 @@ PRICES = (
 )
 
 class City(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=30)
 
 class User(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=30)
     image_url = models.CharField(max_length=300)
-    instagram_username= models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=30)
+    instagram_username= models.CharField(max_length=30, unique=True)
+    phone_number = models.CharField(max_length=30, unique=True)
     business_number = models.CharField(max_length=30, blank=True, null=True)
-    price = models.CharField(choices=PRICES, max_length=30)
-    followers = models.CharField(choices=FOLLOWERS, max_length=30)
-    city = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(max_length=500, blank=True, null=True)
-    tags = ArrayField(models.CharField(max_length=30), blank=True)
     city_id = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
-    bundles = models.TextField(max_length=500, blank=True, null=True)
 
 class Bundle(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=30)
     description = models.TextField(max_length=500, blank=True, null=True)
     price = models.CharField(max_length=30)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class Tag(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
+    name = models.CharField(max_length=30)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Follower(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
+    name = models.CharField(max_length=30)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Price(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
+    name = models.CharField(max_length=30)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
