@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text , Button, FlatList} from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right } from 'native-base';
 
-import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
+import ProfileHeader from '../../components/ProfileHeader';
 
 
 class  ProfileScreen extends Component {
@@ -21,7 +21,7 @@ class  ProfileScreen extends Component {
 
       return (
          <Container>
-
+             <ProfileHeader screenTitle="Profile"/>
             <Content contentContainerStyle={{
                flex: 1,
                alignItems: 'center',
