@@ -8,8 +8,13 @@ from rest_framework.parsers import FileUploadParser
 
 from datetime import *
 
-# from .models import Match, Profile, User
-# from .serializer import MatchSerializer, ProfileSerializer, UserSerializer
+from .models import User
+from .serializer import UserSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = (permissions.AllowAny, )
 
 # Create your views here.
 # class ProfileViewSet(viewsets.ModelViewSet):
