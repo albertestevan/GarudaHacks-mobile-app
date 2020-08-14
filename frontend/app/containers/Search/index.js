@@ -1,17 +1,14 @@
 import React, {Component} from 'react'
-import { TouchableOpacity, View, Text , Button, FlatList} from 'react-native'
+import { TouchableOpacity, View, Text ,  FlatList} from 'react-native'
 
-import { Icon, Container, Header, Content, Left, Right } from 'native-base';
-
-import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
-
-
+import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
 
 
 class  SearchScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
+
       };
     }
 
@@ -23,6 +20,21 @@ class  SearchScreen extends Component {
 
       return (
          <Container>
+            <Header searchBar rounded>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input
+                           placeholder="Search"
+                           returnKeyType="search"
+                           value={this.state.term}
+                           onChangeText={val => this.setState({ term: val })}
+                        />
+                    </Item>
+
+                    <Button transparent>
+                        <Text>Search</Text>
+                    </Button>
+                </Header>
 
             <Content contentContainerStyle={{
                flex: 1,
@@ -31,6 +43,8 @@ class  SearchScreen extends Component {
             }}>
 
             <Text>SearchScreen</Text>
+         <Text>{this.state.term}</Text>
+
 
             </Content>
          </Container>
