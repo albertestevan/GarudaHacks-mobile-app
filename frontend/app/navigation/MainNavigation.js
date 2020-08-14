@@ -44,12 +44,12 @@ class MainNavigator extends Component {
                 let iconName;
 
                 if (route.name === 'Home') {
-                  iconName = 'ios-home';
+                  iconName = 'md-home';
                 } else if (route.name === 'Search') {
-                  iconName = 'ios-search';
+                  iconName = 'md-search';
                 }
                 else if (route.name === 'Profile') {
-                  iconName = 'ios-person';
+                  iconName = 'md-person';
                 }
 
                 // You can return any component that you like here!

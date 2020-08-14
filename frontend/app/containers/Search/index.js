@@ -3,6 +3,8 @@ import { TouchableOpacity, View, Text ,  FlatList} from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 class  SearchScreen extends Component {
    constructor(props) {
@@ -26,13 +28,13 @@ class  SearchScreen extends Component {
                         <Input
                            placeholder="Search"
                            returnKeyType="search"
-                           value={this.state.term}
-                           onChangeText={val => this.setState({ term: val })}
+                           value={this.state.searchBarInput}
+                           onChangeText={val => this.setState({ searchBarInput: val })}
                         />
                     </Item>
 
                     <Button transparent>
-                        <Text>Search</Text>
+                        <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>
 
@@ -43,7 +45,7 @@ class  SearchScreen extends Component {
             }}>
 
             <Text>SearchScreen</Text>
-         <Text>{this.state.term}</Text>
+         <Text>{this.state.searchBarInput}</Text>
 
 
             </Content>
