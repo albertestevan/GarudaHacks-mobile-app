@@ -1,59 +1,74 @@
-import React, { useEffect, useRef } from 'react';
+import React, {Component} from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
+import SearchScreen from '../containers/Search';
+import ProfileScreen from '../containers/Profile';
+
+import HomeNavigator from './HomeNavigation';
+
+import { TouchableOpacity, View, Text, StyleSheet, AsyncStorage} from "react-native";
+
 // import AsyncStorage from '@react-native-community/async-storage';
-import { View, ActivityIndicator } from 'react-native';
-import * as authActions from '../store/actions/auth';
-import * as SecureStore from 'expo-secure-store';
-// import * as authActions from '../utils/auth';
-import HomePageNavigator from './HomePageNavigation';
-import SignUpScreen from "../containers/signup/index";
-import LoginScreen from "../containers/login/index";
-import CameraWrapper from "../containers/CameraWrapper";
-import { useDispatch } from 'react-redux';
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-import { useSelector } from 'react-redux';
-const Stack = createStackNavigator();
+const Tabs = createBottomTabNavigator();
 
-export default function MainNavigator({ navigation }) {
-  const dispatch = useDispatch();
-  // if( loginState.isLoading ) {
-  //   return(
-  //     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-  //       <ActivityIndicator size="large"/>
-  //     </View>
-  //   );
-  // }
-  useEffect(() => { 
-    console.log("getting key")
-    getToken();
-  });
-  const getToken = async () => {
-    //if key exist in local storage
-    const token = await SecureStore.getItemAsync('userToken');
-    if (token) {
-      try {
-        console.log("token", token)
-        let action;
-        action = authActions.authenticate(
-          token
-        );
-        await dispatch(action);
-      } catch (err) {
-        return;
-      }
-    }
-  };
 
-  return (
-    <NavigationContainer>
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomePageNavigator} options={{headerShown: false}}/>
-            <Stack.Screen name="Login" component={LoginScreen} options={{title: 'Login', headerShown: true}}/>
-            <Stack.Screen name="SignUp" component={SignUpScreen} options={{title: 'Sign Up', headerShown: true}}/>
-            <Stack.Screen name="CameraWrapper" component={CameraWrapper} options={{title: 'Media', headerShown: true}}/>
-        </Stack.Navigator>
-    </NavigationContainer>
-  );
+class MainNavigator extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  componentDidMount = async () => {
+
+
+ };
+
+
+  render() {
+    // this.state = { menu_list };
+    return (
+      <NavigationContainer>
+            <Tabs.Navigator
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused, color, size }) => {
+                let iconName;
+
+                if (route.name === 'Home') {
+                  iconName = 'ios-home';
+                } else if (route.name === 'Search') {
+                  iconName = 'ios-search';
+                }
+                else if (route.name === 'Profile') {
+                  iconName = 'ios-person';
+                }
+
+                // You can return any component that you like here!
+                return <Ionicons name={iconName} size={size} color={color} />;
+              },
+            })}
+            tabBarOptions={{
+              activeTintColor: 'blue',
+              inactiveTintColor: 'gray',
+            }}
+          >
+             <Tabs.Screen name="Home" component={HomeNavigator} />
+              <Tabs.Screen name="Search" component={SearchScreen}/>
+              <Tabs.Screen name="Profile" component={ProfileScreen}/>
+          </Tabs.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
+
+export default MainNavigator;
