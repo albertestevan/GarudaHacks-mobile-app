@@ -1,18 +1,22 @@
 import React, {Component} from 'react'
-import { Dimensions, StyleSheet, ScrollView} from 'react-native'
-
-import { Icon, Container, Header, Content, Left, Right } from 'native-base';
-
+import { Dimensions, StyleSheet, ScrollView, Text} from 'react-native'
+import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
 // import { Card } from "@paraboly/react-native-card";
 import Card from '../../components/Card'
 
 const { width } = Dimensions.get("window");
+
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+
 class  SearchScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
+
       };
     }
 
@@ -20,13 +24,32 @@ class  SearchScreen extends Component {
       
    }
 
+   searchSubmit() {
+      console.log("search submitted");
+   }
+
    render() {
 
       return (
-         <Container>
-            <HeaderHamburgerMenu navigation={this.props.navigation} screenTitle="search"/>        
+         <Container>     
+            <Header searchBar rounded>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input
+                           placeholder="Search"
+                           returnKeyType="search"
+                           value={this.state.searchBarInput}
+                           onChangeText={val => this.setState({ searchBarInput: val })}
+                           onSubmitEditing={this.searchSubmit}
+                        />
+                    </Item>
 
+                    <Button transparent>
+                        <MaterialCommunityIcons name="filter-variant" size={30}/>
+                    </Button>
+                </Header>
             <ScrollView>
+            <Text>{this.state.searchBarInput}</Text>
                <Content 
                contentContainerStyle={{   
                   flex: 1,
@@ -35,7 +58,7 @@ class  SearchScreen extends Component {
                   justifyContent: 'flex-start',
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  paddingTop: 40
+                  paddingTop: 10
                }}
                >
                   <Card
@@ -62,13 +85,6 @@ class  SearchScreen extends Component {
                      // style={styles.card}
                      />
 
-                  <Card
-                     width={width}
-                     name={"woing"}
-                     location={"jakataks"}
-                     price={"10000"}
-                     // style={styles.card}
-                     />
 
                   <Card
                      width={width}
@@ -85,7 +101,73 @@ class  SearchScreen extends Component {
                      price={"10000"}
                      // style={styles.card}
                      />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
 
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
 
                </Content>
             </ScrollView>
