@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from django.contrib.auth.models import AbstractUser
+from .randomizer import pkgen
 
 # Create your models here.
 FOLLOWERS = (
@@ -19,14 +19,27 @@ PRICES = (
     ("3", "~ 10M"),
 )
 
+class City(models.Model):
+    name = models.CharField(max_length=30)
+
 class User(models.Model):
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=30)
     image_url = models.CharField(max_length=300)
     instagram_username= models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=30, primary_key=True)
+    phone_number = models.CharField(max_length=30)
     business_number = models.CharField(max_length=30, blank=True, null=True)
     price = models.CharField(choices=PRICES, max_length=30)
     followers = models.CharField(choices=FOLLOWERS, max_length=30)
     city = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(max_length=500, blank=True, null=True)
-    Tags = ArrayField(models.CharField(max_length=30), blank=True)
+    tags = ArrayField(models.CharField(max_length=30), blank=True)
+    city_id = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    bundles = models.TextField(max_length=500, blank=True, null=True)
+
+class Bundle(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.TextField(max_length=500, blank=True, null=True)
+    price = models.CharField(max_length=30)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
