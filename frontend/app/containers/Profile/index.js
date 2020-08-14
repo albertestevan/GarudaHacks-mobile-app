@@ -17,11 +17,12 @@ class  ProfileScreen extends Component {
       
    }
 
-   render() {
 
+   render() {
+    const {navigation} = this.props;
       return (
          <Container>
-             <ProfileHeader screenTitle="Profile"/>
+             <ProfileHeader navigation={navigation} screenTitle="Profile"/>
             <Content contentContainerStyle={{
                flex: 1,
                alignItems: 'center',

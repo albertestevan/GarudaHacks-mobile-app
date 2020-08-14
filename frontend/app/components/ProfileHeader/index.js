@@ -14,7 +14,7 @@ class ProfileHeader extends Component {
                      <Title style={{textAlign:'left'}}>{this.props.screenTitle}</Title>
                   </Body>
                   <Right style={{flex:1}}>
-                    <Icon name="settings"/>
+                    <Icon name="settings" onPress={() => this.props.navigation.navigate('Setting')}/>
                   </Right> 
                </Header>
            </View>
