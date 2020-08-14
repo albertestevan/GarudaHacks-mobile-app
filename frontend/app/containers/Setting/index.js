@@ -22,9 +22,9 @@ const SettingScreen = ({ navigation }) => {
                 </ListItem>
             
 
-                <ListItem onPress={() => {navigation.navigate('EditProfile')}} selected>
+                <ListItem onPress={() => {navigation.navigate('ManageBundles')}} selected>
                     <Left>
-                        <Text>Edit Profile</Text>
+                        <Text>Manage Bundles</Text>
                     </Left>
                     <Right>
                         <Icon name="arrow-forward" />
