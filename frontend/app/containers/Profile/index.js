@@ -5,6 +5,8 @@ import { Icon, Container, Header, Content, Left, Right, Segment, Button } from '
 
 import ProfileHeader from '../../components/ProfileHeader';
 
+import globalstyles from '../../globalstyle';
+
 
 class  ProfileScreen extends Component {
    constructor(props) {
@@ -39,9 +41,9 @@ class  ProfileScreen extends Component {
             <Text>{this.state.activePage}</Text>
             <Segment>
                     <Button active={this.state.activePage === 1}
-                        onPress={this.selectComponent(1)}><Text style={this.state.activePage === 1 ? styles.white : styles.black}>Seeking Endorsement</Text></Button>
+                        onPress={this.selectComponent(1)}><Text style={this.state.activePage === 1 ? globalstyles.white : globalstyles.black}>Seeking Endorsement</Text></Button>
                     <Button  active={this.state.activePage === 2}
-                        onPress= {this.selectComponent(2)}><Text style={this.state.activePage === 2 ? styles.white : styles.black}>Endorser</Text></Button>
+                        onPress= {this.selectComponent(2)}><Text style={this.state.activePage === 2 ? globalstyles.white : globalstyles.black}>Endorser</Text></Button>
             </Segment>
 
             </Content>
@@ -50,20 +52,4 @@ class  ProfileScreen extends Component {
       )
    }
 }
-export default ProfileScreen
-
-const styles = StyleSheet.create({
-    white: {
-            color: '#FFFFFF',
-    },
-    black: {
-              color: '#000000',
-      },
-    red: {
-            color: '#F44336'
-      
-    },
-    orange:{
-            color : '#FF9800'
-    }
-  });
+export default ProfileScreen;
