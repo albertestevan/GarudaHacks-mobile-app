@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
-class FilterLocationScreen extends React.Component {
+class FilterLocationScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -52,7 +52,6 @@ class FilterLocationScreen extends React.Component {
                     </Content>
                   </Left>
                   <Right>
-                    <Icon name="arrow-forward" />
                   </Right>
               </ListItem>))}
               </List>
