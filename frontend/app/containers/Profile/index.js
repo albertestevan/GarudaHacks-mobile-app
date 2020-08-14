@@ -90,9 +90,8 @@ class  ProfileScreen extends Component {
                      source={avatar}
                   />
                </View>
-               <View style={styles.center}>
-                  <Text style={styles.name}>Jessica Hartanto Estevan</Text>
-
+               <View style={globalstyles.center}>
+                  <Text style={globalstyles.name}>Jessica Hartanto Estevan</Text>
                </View>
                <Content 
                 scrollEnabled={false}
@@ -101,35 +100,35 @@ class  ProfileScreen extends Component {
                   marginBottom: 0
                }}
                >
-                  <View style={styles.tabRow}>
-                     <Animated.Text style={styles.tabLabelNumber}>
+                  <View style={globalstyles.tabRow}>
+                     <Animated.Text style={globalstyles.tabLabelNumber}>
                         1.1K
                      </Animated.Text>
-                     <Animated.Text style={styles.tabLabelText}>
+                     <Animated.Text style={globalstyles.tabLabelText}>
                         Followers
                      </Animated.Text>
                   </View>
-                  <View style={styles.tabRow}>
-                     <Animated.Text style={styles.tabLabelNumber}>
+                  <View style={globalstyles.tabRow}>
+                     <Animated.Text style={globalstyles.tabLabelNumber}>
                         627
                      </Animated.Text>
-                     <Animated.Text style={styles.tabLabelText}>
+                     <Animated.Text style={globalstyles.tabLabelText}>
                         Posts
                      </Animated.Text>
                   </View>
                </Content>
             </Content>
             <Content  scrollEnabled={true}>
-                  <Text style={styles.description}>Description</Text>
-                  <Text style={styles.descriptionText}>Definition of WOING unscrambled
+                  <Text style={globalstyles.description}>Description</Text>
+                  <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
 
-                  <Text style={styles.description}>Description</Text>
-                                 <Text style={styles.descriptionText}>Definition of WOING unscrambled
+                  <Text style={globalstyles.description}>Description</Text>
+                                 <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
 
-                  <Text style={styles.description}>Description</Text>
-                                 <Text style={styles.descriptionText}>Definition of WOING unscrambled
+                  <Text style={globalstyles.description}>Description</Text>
+                                 <Text style={globalstyles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
                {/* </ScrollView> */}
                <Content contentContainerStyle={{
@@ -147,8 +146,8 @@ class  ProfileScreen extends Component {
                   </Text>
                   <TagSelector
                      // maxHeight={70}
-                     // containerStyle = {styles.tagSelectorContainer}
-                     selectedTagStyle = {styles.tagSelected}
+                     // containerStyle = {globalstyles.tagSelectorContainer}
+                     selectedTagStyle = {globalstyles.tagSelected}
                      tags={this.tags}
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
          
@@ -191,48 +190,41 @@ const _shadowStyle = {
 
 
 
-const styles = StyleSheet.create({
-   container: {
-       flex: 1,
-       alignItems: 'center',
-       justifyContent: 'center',
-       borderRadius: 15,
-       backgroundColor: '#fff',
-   },
-   name: {
-      fontSize: 24,
-      marginTop: 20
-   },
-   description: {
-      fontSize: 18,
-      marginTop: 20,
-      marginLeft: 20
-   },
-   descriptionText: {
-      fontSize: 16,
-      marginTop: 10,
-      marginLeft: 40
-   },
-   tabRow: {
-      width: '50%',
-      alignItems: 'center', 
-      marginTop: 10, 
-    },
-    tabLabelNumber: {
-      color: 'black',
-      fontSize: 22,
-      textAlign: 'center',
-      // marginBottom: 5,
-    },
-    tabLabelText: {
-      color: 'black',
-      fontSize: 14,
-      textAlign: 'left',
-      // marginBottom: 5,
-    },
-    center:{
-      alignItems: 'center',
-    }
-});
+// const styles = StyleSheet.create({
+//    name: {
+//       fontSize: 24,
+//       marginTop: 20
+//    },
+//    description: {
+//       fontSize: 18,
+//       marginTop: 20,
+//       marginLeft: 20
+//    },
+//    descriptionText: {
+//       fontSize: 16,
+//       marginTop: 10,
+//       marginLeft: 40
+//    },
+//    tabRow: {
+//       width: '50%',
+//       alignItems: 'center', 
+//       marginTop: 10, 
+//     },
+//     tabLabelNumber: {
+//       color: 'black',
+//       fontSize: 22,
+//       textAlign: 'center',
+//       // marginBottom: 5,
+//     },
+//     tabLabelText: {
+//       color: 'black',
+//       fontSize: 14,
+//       textAlign: 'left',
+//       // marginBottom: 5,
+//     },
+//     center:{
+//       alignItems: 'center',
+//     }
+// });
 export default ProfileScreen;
 
