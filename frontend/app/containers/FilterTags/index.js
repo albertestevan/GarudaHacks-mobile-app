@@ -10,39 +10,39 @@ class FilterTagsScreen extends Component {
 
     tags = [
         {
-            id: 'automotive',
+            id: '1',
             name: 'Automotive'
         },
         {
-            id: 'beauty',
+            id: '2',
             name: 'Beauty'
         },
         {
-            id: 'tech',
+            id: '3',
             name: 'Tech'
         },
         {
-            id: 'culinary',
+            id: '4',
             name: 'Culinary'
         },
         {
-            id: 'fashion',
+            id: '5',
             name: 'Fashion'
         },
         {
-            id: 'travel',
+            id: '6',
             name: 'Travel'
         },
         {
-            id: 'diet',
+            id: '7',
             name: 'Diet'
         },
         {
-            id: 'fitness',
+            id: '8',
             name: 'Fitness'
         },
         {
-            id: 'financial',
+            id: '9',
             name: 'Financial'
         }
     ]
