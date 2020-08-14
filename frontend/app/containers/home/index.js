@@ -10,14 +10,6 @@ import { Icon, Container, Content, Left } from 'native-base';
 import GetLocation from '../../components/GetLocation';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
-var isRooted;
-
-if (!isRooted) {
-   console.log("false");
-} else {
-   console.log("true");
-   BackHandler.exitApp();
-}
 
 export default function HomeScreen(props) {
    const {navigation} = props;
@@ -27,7 +19,6 @@ export default function HomeScreen(props) {
    const state = useSelector(state => state);
    return (
       <Container>
-         <HeaderHamburgerMenu navigation={navigation} screenTitle="Home"/>
          <Content contentContainerStyle={{
             flex: 1,
             alignItems: 'center',

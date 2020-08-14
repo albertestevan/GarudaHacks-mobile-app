@@ -23,7 +23,6 @@ class  SearchScreen extends Component {
 
       return (
          <Container>
-            <HeaderHamburgerMenu navigation={this.props.navigation} screenTitle="Kolaborator"/>        
 
             <Content contentContainerStyle={{
                flex: 1,

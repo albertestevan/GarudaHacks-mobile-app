@@ -13,56 +13,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base';
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const Tabs = createBottomTabNavigator();
-
-export class CustomDrawerContent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
-  render() {
-    return(
-      <Container>
-         <Content contentContainerStyle={{
-            paddingTop: 20,
-         }}>
-           <List>
-
-            <ListItem onPress={() => {this.props.navigation.navigate('Home')}} selected>
-              <Left>
-                <Text>Home</Text>
-              </Left>
-              <Right>
-                <Icon name="arrow-forward" />
-              </Right>
-            </ListItem>
-
-            {console.log(this.props.menuList)}
-            {this.props.menuList
-              ? this.props.menuList.map(menu => (
-                <ListItem onPress={() => {this.props.navigation.navigate(`${menu.name}`)}} selected>
-                  <Left>
-                    <Text>{`${menu.title}`}</Text>
-                  </Left>
-                  <Right>
-                    <Icon name="arrow-forward" />
-                  </Right>
-              </ListItem>
-              ))
-            : null}
-            </List>
-        </Content>
-      </Container>
-
-    );
-  }
-
-}
-
 
 
 class HomePageNavigator extends Component {
@@ -81,8 +35,29 @@ class HomePageNavigator extends Component {
   render() {
     // this.state = { menu_list };
     return (
-      // <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} menuList={this.state.menu_list}/>}>
-          <Tabs.Navigator>
+      <Tabs.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = 'ios-home';
+          } else if (route.name === 'Search') {
+            iconName = 'ios-search';
+          }
+          else if (route.name === 'Profile') {
+            iconName = 'ios-person';
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'blue',
+        inactiveTintColor: 'gray',
+      }}
+    >
              <Tabs.Screen name="Home" component={HomeScreen} />
               <Tabs.Screen name="Search" component={SearchScreen}/>
               <Tabs.Screen name="Profile" component={ProfileScreen}/>
