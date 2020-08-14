@@ -5,7 +5,7 @@ import { Icon, Container, Header, Content, Left} from 'native-base'
 
 
 
-const ManageBundlesScreen = ({ navigation }) => {
+const ManagePlansScreen = ({ navigation }) => {
   
    return (
       <Container>
@@ -16,10 +16,10 @@ const ManageBundlesScreen = ({ navigation }) => {
             justifyContent: 'center'
          }}>
 
-         <Text>ManageBundlesScreen</Text>
+         <Text>ManagePlansScreen</Text>
 
          </Content>
       </Container>
    )
 }
-export default ManageBundlesScreen
+export default ManagePlansScreen;

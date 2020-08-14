@@ -5,7 +5,7 @@ import { View, ActivityIndicator } from 'react-native';
 
 import SettingScreen from '../containers/Setting';
 import EditProfileScreen from '../containers/EditProfile';
-import ManageBundlesScreen from '../containers/ManageBundles';
+import ManagePlansScreen from '../containers/ManagePlans';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +15,7 @@ export default function SettingNavigator({ navigation }) {
         <Stack.Navigator>
             <Stack.Screen name="Setting" component={SettingScreen}/>
             <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
-            <Stack.Screen name="ManageBundles" component={ManageBundlesScreen}/>
+            <Stack.Screen name="ManagePlans" component={ManagePlansScreen}/>
         </Stack.Navigator>
   );
 }

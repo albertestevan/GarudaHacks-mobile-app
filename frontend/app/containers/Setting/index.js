@@ -22,9 +22,9 @@ const SettingScreen = ({ navigation }) => {
                 </ListItem>
             
 
-                <ListItem onPress={() => {navigation.navigate('ManageBundles')}} selected>
+                <ListItem onPress={() => {navigation.navigate('ManagePlans')}} selected>
                     <Left>
-                        <Text>Manage Bundles</Text>
+                        <Text>Manage Plans</Text>
                     </Left>
                     <Right>
                         <Icon name="arrow-forward" />
