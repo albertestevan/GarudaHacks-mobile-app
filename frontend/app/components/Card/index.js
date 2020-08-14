@@ -71,21 +71,21 @@ const Card = props => {
     });
 
     const _shadowStyle = {
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgba(0,0,0,0.11)",
-        shadowOffset: {
-          width: 1.5,
-          height: 1.5
+        ...Platform.select({
+        ios: {
+            shadowColor: "rgba(0,0,0,0.11)",
+            shadowOffset: {
+            width: 1.5,
+            height: 1.5
+            },
+            shadowRadius: 6,
+            shadowOpacity: 1
         },
-        shadowRadius: 6,
-        shadowOpacity: 1
-      },
-      android: {
-        elevation: 2
-      }
-    })
-  };
+        android: {
+            elevation: 2
+        }
+        })
+    };
 
   return (
     <View style={[_shadowStyle]}>
