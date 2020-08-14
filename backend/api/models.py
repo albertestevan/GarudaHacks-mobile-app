@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 FOLLOWERS = (
@@ -24,8 +25,8 @@ class User(models.Model):
     instagram_username= models.CharField(max_length=30)
     phone_number = models.CharField(max_length=30, primary_key=True)
     business_number = models.CharField(max_length=30, blank=True, null=True)
-    price = models.CharField(choices=PRICES)
-    followers = models.CharField(choice=FOLLOWERS)
+    price = models.CharField(choices=PRICES, max_length=30)
+    followers = models.CharField(choices=FOLLOWERS, max_length=30)
     city = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     Tags = ArrayField(models.CharField(max_length=30), blank=True)
