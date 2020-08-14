@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
-import { TouchableOpacity, View, Text ,  FlatList} from 'react-native'
-
+import { Dimensions, StyleSheet, ScrollView, Text} from 'react-native'
 import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
+import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
+
+// import { Card } from "@paraboly/react-native-card";
+import Card from '../../components/Card'
+
+const { width } = Dimensions.get("window");
+
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -25,7 +31,7 @@ class  SearchScreen extends Component {
    render() {
 
       return (
-         <Container>
+         <Container>     
             <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
@@ -42,21 +48,155 @@ class  SearchScreen extends Component {
                         <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>
+            <ScrollView>
+            <Text>{this.state.searchBarInput}</Text>
+               <Content 
+               contentContainerStyle={{   
+                  flex: 1,
+                  backgroundColor: '#fff',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  paddingTop: 10
+               }}
+               >
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
 
-            <Content contentContainerStyle={{
-               flex: 1,
-               alignItems: 'center',
-               justifyContent: 'center'
-            }}>
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
 
-            <Text>SearchScreen</Text>
-         <Text>{this.state.searchBarInput}</Text>
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
 
 
-            </Content>
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+                  <Card
+                     width={width}
+                     name={"woing"}
+                     location={"jakataks"}
+                     price={"10000"}
+                     // style={styles.card}
+                     />
+
+               </Content>
+            </ScrollView>
          </Container>
                   
       )
    }
 }
-export default SearchScreen
+export default SearchScreen;
+
+const styles = StyleSheet.create({
+   card: {
+     width:  width * 0.45,
+     height: width * 0.45,
+     marginLeft: width * 0.025,
+     margin: width * 0.025
+   },
+   gradient: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center'
+   },
+   authContainer: {
+     width: '80%',
+     maxWidth: 400,
+     maxHeight: 400,
+     padding: 20
+   },
+   buttonContainer: {
+     marginTop: 10
+   }
+ });
