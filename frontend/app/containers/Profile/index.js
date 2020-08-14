@@ -119,7 +119,6 @@ class  ProfileScreen extends Component {
                   <TagSelector
                      // maxHeight={70}
                      // containerStyle = {globalstyles.tagSelectorContainer}
-                     selectedTagStyle = {globalstyles.tagSelected}
                      tags={this.tags}
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
 

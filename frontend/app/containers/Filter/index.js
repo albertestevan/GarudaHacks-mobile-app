@@ -30,6 +30,15 @@ const FilterScreen = ({ navigation }) => {
                         <Icon name="arrow-forward" />
                     </Right>
                 </ListItem>
+
+                <ListItem onPress={() => {navigation.navigate('FilterTags')}} selected>
+                    <Left>
+                        <Text>Tags</Text>
+                    </Left>
+                    <Right>
+                        <Icon name="arrow-forward" />
+                    </Right>
+                </ListItem>
             </List>
 
          </Content>
