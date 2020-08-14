@@ -8,27 +8,15 @@ import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
 
 
-class  InvestorPageScreen extends Component {
+class  SearchScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
-        minimumValue: '',
       };
     }
 
    componentDidMount() {
-      fetch('https://delicate-king-df67.liku.workers.dev/')
-      .then((response) => response.json())
-      .then((json) => {
-         this.setState({ minimumValue: json });
-         console.log(json);
-       })
-      // .then((json) => {
-      //    return json.value;
-      // })
-      .catch((error) => {
-         console.error(error);
-      });
+      
    }
 
    render() {
@@ -43,9 +31,7 @@ class  InvestorPageScreen extends Component {
                justifyContent: 'center'
             }}>
 
-            <Text>InvestorPageScreen</Text>
-            <Text>{"sample value form Cloudflare KV:" + this.state.minimumValue}</Text>
-            {/* <FlatList */}
+            <Text>SearchScreen</Text>
 
             </Content>
          </Container>
@@ -53,4 +39,4 @@ class  InvestorPageScreen extends Component {
       )
    }
 }
-export default InvestorPageScreen
+export default SearchScreen
