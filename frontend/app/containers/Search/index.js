@@ -18,6 +18,10 @@ class  SearchScreen extends Component {
       
    }
 
+   searchSubmit() {
+      console.log("search submitted");
+   }
+
    render() {
 
       return (
@@ -30,6 +34,7 @@ class  SearchScreen extends Component {
                            returnKeyType="search"
                            value={this.state.searchBarInput}
                            onChangeText={val => this.setState({ searchBarInput: val })}
+                           onSubmitEditing={this.searchSubmit}
                         />
                     </Item>
 
