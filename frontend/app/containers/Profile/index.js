@@ -8,11 +8,16 @@ import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
 
 import globalstyles from '../../globalstyle';
+
+import TagSelector from 'react-native-tag-selector';
+
+
+
 class  ProfileScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
-        activePage:1
+        selectedTags: [],
       };
     }
 
@@ -25,6 +30,49 @@ class  ProfileScreen extends Component {
         else 
           return <Component2/> //... Your Component 2 to display
       }
+
+    tags = [
+        {
+            id: 'automotive',
+            name: 'Automotive'
+        },
+        {
+            id: 'beauty',
+            name: 'Beauty'
+        },
+        {
+            id: 'tech',
+            name: 'Tech'
+        },
+        {
+            id: 'culinary',
+            name: 'Culinary'
+        },
+        {
+            id: 'fashion',
+            name: 'Fashion'
+        },
+        {
+            id: 'travel',
+            name: 'Travel'
+        },
+        {
+            id: 'diet',
+            name: 'Diet'
+        },
+        {
+            id: 'fitness',
+            name: 'Fitness'
+        },
+        {
+            id: 'financial',
+            name: 'Financial'
+        }
+    ]
+
+    componentDidUpdate(){
+
+    }
 
    render() {
 
@@ -86,19 +134,35 @@ class  ProfileScreen extends Component {
                                  <Text style={styles.descriptionText}>Definition of WOING unscrambled
                   If we unscramble these letters, WOING, it and makes several words. Here is one of the definitions for a word that uses all the unscrambled letters:</Text>
                {/* </ScrollView> */}
-               <Segment>
-                    <Button active={this.state.activePage === 1}
-                        onPress={this.selectComponent(1)}><Text style={this.state.activePage === 1 ? globalstyles.white : globalstyles.black}>Seeking Endorsement</Text></Button>
-                    <Button  active={this.state.activePage === 2}
-                        onPress= {this.selectComponent(2)}><Text style={this.state.activePage === 2 ? globalstyles.white : globalstyles.black}>Endorser</Text></Button>
-            </Segment>
+               <Content contentContainerStyle={{
+               flex: 1,
+               alignItems: 'center',
+               justifyContent: 'center'
+            }}
+            padder>
+
+            <Text>ProfileScreen</Text>
+            <Text>Tags</Text>
+
+                <Text>
+                    Selected: {this.state.selectedTags.map(tag => `${tag} `)}
+                </Text>
+                <TagSelector
+                    // maxHeight={70}
+                    // containerStyle = {styles.tagSelectorContainer}
+                    selectedTagStyle = {styles.tagSelected}
+                    tags={this.tags}
+                    onChange={(selected) => this.setState({ selectedTags: selected })} />
+        
+            </Content>
                </Content>
+        
+
          </Container>
                   
       )
    }
 }
-export default ProfileScreen
 
 const imageStyle = {
    marginTop: 20,
@@ -172,3 +236,5 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     }
 });
+export default ProfileScreen;
+
