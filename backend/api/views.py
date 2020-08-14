@@ -16,6 +16,66 @@ class UserViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (permissions.AllowAny, )
 
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def create_user(self, request, pk=None):
+        if 'name' in request.data and 'phone_number' in request.data:
+            try: 
+                user = User.objects.get(phone_number=request.data['phone_number'])
+                response = {'message': 'phone number used!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                newUser = User.objects.create(name=request.data['name'], phone_number=request.data['phone_number'], image_url=request.data['request_url'], instagram_username=request.data['instagram_username'], business_number=request.data['business_number'], description=request.data['description'], city_id=request.data['city_id'])
+                newUser.save()
+                serializer = UserSerializer(newUser, many=False)
+                response = {'message': 'Successfully created User', 'result': serializer.data}
+                return Response(response, status=status.HTTP_200_OK)
+            response = {'message': 'error!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)     
+    
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def update_profile(self, request, pk=None):
+        if 'name' in request.data and 'phone_number' in request.data:
+            try:
+                user = User.objects.get(phone_number=request.data['phone_number'])
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            user.name = request.data['name']
+            user.image_url = request.data['image_url']
+            user.instagram_username = request.data['instagram_username']
+            user.phone_number = request.data['phone_number']
+            user.business_number = request.data['business_number']
+            user.description = request.data['description']
+            user.city_id = request.data['city_id']
+            user.save()
+            serializer = UserSerializer(user, many=False)
+            response = {'message': 'Successfully updated profile', 'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK)  
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST) 
+
+    @action(detail=False, methods=['GET'])
+    def get_profile(self, request, pk=None):
+        if 'phone_number' in request.headers:
+            try:
+                user = User.objects.get(phone_number=request.headers['phone_number'])
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+            serializer = UserSerializer(user, many=False)
+            response = {'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK) 
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+
+    
 # Create your views here.
 # class ProfileViewSet(viewsets.ModelViewSet):
 #     queryset = Profile.objects.all()

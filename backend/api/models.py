@@ -39,7 +39,6 @@ class Bundle(models.Model):
     price = models.CharField(max_length=30)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
 class Tag(models.Model):
     id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=30)
