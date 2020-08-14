@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { TouchableOpacity, View, Text, StyleSheet, Button, BackHandler} from "react-native";
 import { Icon, Container, Content, Left } from 'native-base';
 
-import PushNotifications, {sendPushNotification} from '../../utils/pushNotification';
 import GetLocation from '../../components/GetLocation';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
@@ -28,7 +27,6 @@ export default function HomeScreen(props) {
    const state = useSelector(state => state);
    return (
       <Container>
-         <PushNotifications />
          <HeaderHamburgerMenu navigation={navigation} screenTitle="Home"/>
          <Content contentContainerStyle={{
             flex: 1,
@@ -48,7 +46,6 @@ export default function HomeScreen(props) {
             }
             <GetLocation />
             <Button title="Media" onPress={() => navigation.navigate('CameraWrapper')} />
-            <Button title="Push Notification" onPress={() => sendPushNotification("Hello", "World")} />
          </Content>
       </Container>
    );
