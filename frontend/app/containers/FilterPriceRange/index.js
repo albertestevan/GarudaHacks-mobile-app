@@ -46,19 +46,19 @@ class FilterPriceRangeScreen extends Component {
             
             <List>
                 {data.map(price => (
-                <ListItem onPress={() => this.setState({ [price]: !this.state[price]})} selected>
+                <ListItem onPress={() => this.setState({ [price.value]: !this.state[price.value]})} selected>
                   <Left>
                     <Content contentContainerStyle={{
                           padding: 10,
                           flexDirection: 'row',
                         }}>
-                        {this.state[price] ? (
+                        {this.state[price.value] ? (
                         <Ionicons name="md-checkmark" size={20} style={styles.pickedText}/>
                         ) : null}
 
-                        {this.state[price] ? (
-                        <Text style={styles.pickedText}>{price}</Text>
-                        ) : <Text style={styles.regularText}>{price}</Text>}
+                        {this.state[price.value] ? (
+                        <Text style={styles.pickedText}>{price.value}</Text>
+                        ) : <Text style={styles.regularText}>{price.value}</Text>}
                     </Content>
                   </Left>
                   <Right>
