@@ -75,14 +75,14 @@ const AuthScreen = props => {
         let action;
           action = authActions.signup(
             formState.inputValues.email,
-            formState.inputValues.password,
-            formState.inputValues.confirmPassword
+            formState.inputValues.password
           );
         setError(null);
         setIsLoading(true);
         try {
           await dispatch(action);
         } catch (err) {
+          console.log("catch err")
           setError(err.message);
           setIsLoading(false);
           return;
@@ -104,7 +104,7 @@ const AuthScreen = props => {
     },
     [dispatchFormState]
   );
-  console.log(formState)
+  console.log("formState",formState)
   return (
     <Container>
     <KeyboardAvoidingView

@@ -25,19 +25,16 @@ export const authenticate = (token) => {
   };
 };
 
-export const signup = (firstName, lastName, email, password, confirmPassword, referralCode) => {
+export const signup = (email, password) => {
+  console.log("signup");
   return async dispatch => {
     const response = await fetch(
-      'https://veyron-staging.liku.id/register',
+      'http://165.227.25.15/api/user/signup/',
       {
         method: 'POST',
         body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
           email: email,
-          password: password,
-          confirmPassword:  confirmPassword,
-          referralCode: referralCode
+          password: password
         })
       }
     ).catch(function(error) {
@@ -52,17 +49,7 @@ export const signup = (firstName, lastName, email, password, confirmPassword, re
         console.log(resData.error);
         throw new Error(message);
     }
-
-    //do not save token/data since user has to verify acc first before use.
-    // await SecureStore.setItemAsync('credentialsEmail', email);
-    // await SecureStore.setItemAsync('credentialsPassword', password);
-    // await SecureStore.setItemAsync('credentialsToken', resData.token);
-    // await SecureStore.setItemAsync('userToken', resData.token);
-    // dispatch(
-    //     authenticate(
-    //       resData.token
-    //     )
-    //   );
+    console.log("token signup", resData);
   };
 };
 
@@ -91,7 +78,7 @@ export const login = (email, password) => {
     } else{
 
       const response = await fetch(
-        `https://veyron-staging.liku.id/login`,
+        `http://165.227.25.15/api/user/signin/`,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -117,11 +104,11 @@ export const login = (email, password) => {
         }
         throw new Error(message);
       }
-
+      console.log('response', resData)
       await SecureStore.setItemAsync('credentialsEmail', email);
       await SecureStore.setItemAsync('credentialsPassword', password);
-      await SecureStore.setItemAsync('credentialsToken', resData.token);
-      //token for operations
+      await SecureStore.setItemAsync('credentialsToken', resData);
+      // //token for operations
       await SecureStore.setItemAsync('userToken', resData.token);
 
       dispatch(
