@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, City, Bundle, Tag, Follower, Price, Gender
+from .models import User, City, Bundle, Tag, Follower, Price, Gender, File
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,3 +37,7 @@ class GenderSerializer(serializers.ModelSerializer):
         model = Gender
         fields = '__all__'
 
+class FileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = File
+        fields = "__all__"
