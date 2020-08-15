@@ -1,7 +1,7 @@
 import React , { Component, useState } from 'react';
 import Expo from 'expo';
-import { View , Picker, StyleSheet} from 'react-native';
-import { Container, Item, Header, Body, Content, Title, Button, Text } from 'native-base';
+import { View , StyleSheet} from 'react-native';
+import { Container, Item, Header, Body, Content, Title, Button, Text, Picker, Icon } from 'native-base';
 
 import LoadingScreen from '../../containers/Loading';
 
@@ -15,6 +15,7 @@ import { Input } from 'react-native-elements';
 
 import globalstyles from '../../globalstyle';
 
+import * as SecureStore from 'expo-secure-store';
 
 
 const validate = values => {
@@ -41,7 +42,7 @@ const validate = values => {
   return error;
 };
 
-export default class CreateProfileForm extends Component {
+export default class EditProfileForm extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -51,13 +52,14 @@ export default class CreateProfileForm extends Component {
       followers: [],
       genders: [],
       tags: [],
-
     };
   }
 
   
 
 async componentDidMount() {
+    const token = await SecureStore.getItemAsync('userToken');
+
     fetch('http://165.227.25.15/api/cities/')
       .then((response) => response.json())
       .then((json) => {
@@ -94,33 +96,42 @@ async componentDidMount() {
         this.setState({ prices: json.result });
       })
       .catch((error) => console.error(error))
-      .finally(() => {
-        this.setState({ isLoading: false });
-      });
+    //   .finally(() => {
+    //     this.setState({ isLoading: false });
+    //   });
+
+    fetch('http://165.227.25.15/api/user/get_profile/', {
+        method: 'GET',
+        headers: {
+            'Content-Type' : `application/json`,
+            'Authorization'    : `Woing ${token}`,
+
+        }})
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson.result);
+            this.setState({initialProfile: responseJson.result,
+                            priceRange: responseJson.result.priceRange,
+                            city: responseJson.result.city,
+                            followers: responseJson.result.followers,
+                            gender: responseJson.result.gender,
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+        .finally(() => {
+            this.setState({ isLoading: false });
+          });
   }
 
   async onSubmit(profile) {
-    console.log("onsubmit");
-    console.log(profile.name);
-    console.log(profile.imageURL);
-
-    console.log(profile.instaUsername);
-
-    console.log(profile.phoneNumber);
-
-    console.log(profile.businessNumber);
-
-    console.log(profile.description);
-
-    console.log(profile.tags);
-
-    console.log(profile.gender);
-
+    
     this.setState({ isLoading: true });
 
     const token = await SecureStore.getItemAsync('userToken')
 
-    await fetch('http://165.227.25.15/api/user/verify_profile/', {
+    await fetch('http://165.227.25.15/api/user/update_profile/', {
             method: 'POST',
             headers: {
                 'Content-Type' : `application/json`,
@@ -145,6 +156,8 @@ async componentDidMount() {
         .then((responseJson) => {
             console.log(responseJson.message);
             this.setState({ isLoading: false });
+
+            this.props.navigation.goBack();
         })
         .catch((error) => {
             console.error(error);
@@ -153,7 +166,7 @@ async componentDidMount() {
   }
 
   render(){
-     const { handleSubmit, reset } = this.props;
+     const { handleSubmit, reset, initialValues } = this.props;
 
      if (this.state.isLoading) {
       return <LoadingScreen />;
@@ -167,6 +180,7 @@ async componentDidMount() {
           label="Name"
           // style={styles}
           // onChangeText={value => this.setState({ name: value })}
+          defaultValue={initialValues.name} 
           onChangeText={value => this.setState({ name: value })}
 
           />
@@ -174,30 +188,35 @@ async componentDidMount() {
         <Input
           label="imageURL"
           // style={styles}
+          defaultValue={initialValues.imageURL} 
           onChangeText={value => this.setState({ imageURL: value })}
           />
         
         <Input
           label="Instagram Username"
           // style={styles}
+          defaultValue={initialValues.instaUsername} 
           onChangeText={value => this.setState({ instaUsername: value })}
           />
         
         <Input
           label="Phone Number"
           // style={styles}
+          defaultValue={initialValues.phoneNumber} 
           onChangeText={value => this.setState({ phoneNumber: value })}
           />
         
         <Input
           label="Business Phone Number"
           // style={styles}
+          defaultValue={initialValues.businessNumber} 
           onChangeText={value => this.setState({ businessNumber: value })}
           />
 
         <Input
           label="Description"
           // style={styles}
+          defaultValue={initialValues.description} 
           onChangeText={value => this.setState({ description: value })}
           />
         
@@ -217,36 +236,83 @@ async componentDidMount() {
         <Text style={globalstyles.description}>City</Text>
         <Text></Text>
       
-        <RNPickerSelect
-            onValueChange={(value) => this.setState({ city: value})}
-            items={this.state.cities}
-        />
+        <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              style={{ width: undefined }}
+              selectedValue={this.state.city}
+              onValueChange={(value) =>  this.setState({ city: value })}
+            >
+                {this.state.cities.map((city) => (
+              <Picker.Item label={city.label} value={city.value}/>
+                ))}
+            </Picker>
 
         <Text></Text>
         <Text style={globalstyles.description}>Price Range</Text>
         <Text></Text>
-        <RNPickerSelect
+        {/* <RNPickerSelect
+            value={initialValues.priceRange}
             onValueChange={(value) => this.setState({ priceRange: value})}
             items={this.state.prices}
-        />
+        /> */}
+
+        <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              style={{ width: undefined }}
+              selectedValue={this.state.priceRange}
+              onValueChange={(value) =>  this.setState({ priceRange: value })}
+            >
+                {this.state.prices.map((price) => (
+              <Picker.Item label={price.label} value={price.value}/>
+                ))}
+            </Picker>
 
         <Text></Text>
         <Text style={globalstyles.description}>Followers</Text>
         <Text></Text>
         
-        <RNPickerSelect
-            onValueChange={(value) => this.setState({ followers: value })}
-            items={this.state.followersList}
-        />
+        <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              style={{ width: undefined }}
+              selectedValue={this.state.followers}
+              onValueChange={(value) =>  this.setState({ followers: value })}
+            >
+              {this.state.followersList.map((follower) => (
+              <Picker.Item label={follower.label} value={follower.value}/>
+                ))}
+            </Picker>
 
         <Text></Text>
         <Text style={globalstyles.description}>Gender</Text>
         <Text></Text>
         
-        <RNPickerSelect
+        {/* <RNPickerSelect
+            value={initialValues.gender}
             onValueChange={(value) => this.setState({ gender: value })}
             items={this.state.genders}
-        />
+        /> */}
+        <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              style={{ width: undefined }}
+              selectedValue={this.state.gender}
+              onValueChange={(value) => this.setState({ gender: value })}
+            >
+              {this.state.genders.map((gender) => (
+              <Picker.Item label={gender.label} value={gender.value}/>
+                ))}
+            </Picker>
     
 
             <Text></Text>

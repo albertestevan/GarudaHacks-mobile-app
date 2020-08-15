@@ -4,7 +4,7 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import LoginForm from '../../components/LoginForm';
 import { Field, reduxForm } from 'redux-form';
-import CreateProfileForm from '../../components/CreateProfileForm/index.js';
+import EditProfileForm from '../../components/EditProfileForm/index.js';
 import { isLoaded } from 'expo-font';
 import LoadingScreen from '../Loading/index.js';
 
@@ -19,7 +19,8 @@ class EditProfileScreen extends Component{
         super(props);
         this.state = {
             isLoading: false,
-            profile: []
+            profile: [],
+            initialProfile: [],
         };
       }
 
@@ -37,13 +38,13 @@ class EditProfileScreen extends Component{
         //   });
         console.log("asdfasdfasdfasdfasdfasdfasd");
 
-        const token = await SecureStore.getItemAsync('userToken');
+        // const token = await SecureStore.getItemAsync('userToken');
 
         return await fetch('http://165.227.25.15/api/user/get_profile/', {
             method: 'GET',
             headers: {
-                // 'Authorization'    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
-                Authorization    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
+                'Content-Type' : `application/json`,
+                'Authorization'    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
 
             }})
         .then((response) => response.json())
@@ -101,15 +102,16 @@ class EditProfileScreen extends Component{
 
 
   render(){
-    const {isLoading} = this.state
+    const {isLoading, initialProfile} = this.state
 
     if (isLoading){
         return(<LoadingScreen/>)
     }
     return(
       <Provider store= {store}>
-        <CreateProfileForm navigation={this.props.navigation}
-        initialValues={this.state.initialProfile}
+        <EditProfileForm navigation={this.props.navigation}
+            initialValues={initialProfile}
+        
         />
       </Provider>
     )
