@@ -1,27 +1,30 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-from .randomizer import pkgen
 
 # Create your models here.
-FOLLOWERS = (
-    ("1", "~ 1k"),
-    ("2", "~ 5k"),
-    ("3", "~ 10k"),
-    ("4", "~ 50k"),
-    ("5", "~ 100k"),
-    ("6", "~ 500k"),
-    ("7", "> 1M "),
-)
-
-PRICES = (
-    ("1", "~ 500k"),
-    ("2", "~ 5M"),
-    ("3", "~ 10M"),
-)
-
 class City(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Follower(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Tag(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+class Price(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class User(models.Model):
     name = models.CharField(max_length=30)
@@ -30,27 +33,20 @@ class User(models.Model):
     phone_number = models.CharField(max_length=30, unique=True)
     business_number = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(max_length=500, blank=True, null=True)
-    city_id = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    follower = models.ForeignKey(Follower, on_delete=models.CASCADE, null=True)
+    price = models.ForeignKey(Price, on_delete=models.CASCADE, null=True)
+    tags =  models.ManyToManyField(Tag)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Bundle(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
-    description = models.TextField(max_length=500, blank=True, null=True)
-    price = models.CharField(max_length=30)
+    description = models.TextField(max_length=500, blank=True)
+    price = models.FloatField(default=0)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class Tag(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
-    name = models.CharField(max_length=30)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-
-class Follower(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
-    name = models.CharField(max_length=30)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-
-class Price(models.Model):
-    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
-    name = models.CharField(max_length=30)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
