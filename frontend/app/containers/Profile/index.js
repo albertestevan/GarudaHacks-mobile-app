@@ -13,7 +13,7 @@ import TagSelector from 'react-native-tag-selector';
 import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 // name, phone number(login), business number(contact), image_url, description, instagram username, followers, city_id, created_at, updated_at
 
-class  ProfileScreen extends Component {
+class ProfileScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -65,7 +65,7 @@ class  ProfileScreen extends Component {
     }
 
    render() {
-
+        const { navigation } = this.props;
       return (
          <Container>
             <ProfileHeader navigation={this.props.navigation} screenTitle="Profile"/>        
@@ -160,7 +160,7 @@ class  ProfileScreen extends Component {
                 <Text style={globalstyles.description}>Plans</Text>
                 <Text style={globalstyles.descriptionText}>Sample Plans</Text>
 
-                <Button full><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
+                <Button full onPress={() => navigation.popToTop()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
 
          
             </Content>
