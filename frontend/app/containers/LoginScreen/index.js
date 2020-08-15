@@ -1,25 +1,16 @@
-import React from 'react'
-import { TouchableOpacity, View, Text, StyleSheet, Button} from 'react-native'
-
-import { Icon, Container, Header, Content, Left} from 'native-base'
-
-
-
-const LoginScreen = ({ navigation }) => {
-  
-   return (
-      <Container>
-
-         <Content contentContainerStyle={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-         }}>
-
-         <Text>LoginScreen</Text>
-
-         </Content>
-      </Container>
-   )
+import React , { Component } from 'react';
+import allReducers from '../../reducers/index.js';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import LoginForm from '../../components/LoginForm';
+import { Field, reduxForm } from 'redux-form';
+const store = createStore(allReducers);
+ export default class Application extends Component{
+  render(){
+    return(
+      <Provider store= {store}>
+        <LoginForm navigation={this.props.navigation}/>
+      </Provider>
+    )
+  }
 }
-export default LoginScreen
