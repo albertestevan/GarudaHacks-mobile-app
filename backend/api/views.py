@@ -364,8 +364,8 @@ class SearchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def search(self, request, pk=None):
-        user = User.objects.all()
-        result = User.objects.all()
+        user = User.objects.filter(isVerified=True)
+        result = User.objects.filter(isVerified=True)
         
         if 'tag' in request.data:
             inputTags = request.data['tag']
