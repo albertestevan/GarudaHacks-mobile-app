@@ -26,7 +26,7 @@ export const authenticate = (token) => {
 };
 
 export const signup = (email, password) => {
-  console.log("signup");
+  console.log("signup", email, password);
   return async dispatch => {
     const response = await fetch(
       'http://165.227.25.15/api/user/signup/',
@@ -35,7 +35,10 @@ export const signup = (email, password) => {
         body: JSON.stringify({
           email: email,
           password: password
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     ).catch(function(error) {
       console.log('There has been a problem with your fetch operation: ');
@@ -44,8 +47,8 @@ export const signup = (email, password) => {
       });
 
     const resData = await response.json();
-    if (resData.error) {
-        let message = resData.error;
+    if (resData.error || resData.detail) {
+        let message = resData.error || resData.detail;
         console.log(resData.error);
         throw new Error(message);
     }
@@ -85,6 +88,9 @@ export const login = (email, password) => {
             email,
             password,
           }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
       ) .catch(function(error) {
         console.log("There has been a problem with your fetch operation: ");
@@ -93,10 +99,11 @@ export const login = (email, password) => {
         });
 
       const resData = await response.json();
-      if (resData.error) {
-        let err = resData.error;
+      if (resData.error || resData.detail) {
+        let err = resData.error || resData.detail;
         message = '';
         console.log(resData.error);
+        console.log(resData.detail);
         if (err == 'crypto/bcrypt: hashedPassword is not the hash of the given password') {
           message = "Wrong Password! Please try again.";
         } else{
@@ -107,9 +114,9 @@ export const login = (email, password) => {
       console.log('response', resData)
       await SecureStore.setItemAsync('credentialsEmail', email);
       await SecureStore.setItemAsync('credentialsPassword', password);
-      await SecureStore.setItemAsync('credentialsToken', resData);
+      await SecureStore.setItemAsync('credentialsToken', resData.token);
       // //token for operations
-      await SecureStore.setItemAsync('userToken', resData);
+      await SecureStore.setItemAsync('userToken', resData.token);
 
       dispatch(
         authenticate(
