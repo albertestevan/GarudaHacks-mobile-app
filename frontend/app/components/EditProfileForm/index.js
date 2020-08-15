@@ -166,7 +166,7 @@ async componentDidMount() {
   }
 
   render(){
-     const { handleSubmit, reset, initialValues } = this.props;
+     const { handleSubmit, reset} = this.props;
 
      if (this.state.isLoading) {
       return <LoadingScreen />;
@@ -180,7 +180,7 @@ async componentDidMount() {
           label="Name"
           // style={styles}
           // onChangeText={value => this.setState({ name: value })}
-          defaultValue={initialValues.name} 
+          defaultValue={this.state.initialProfile.name} 
           onChangeText={value => this.setState({ name: value })}
 
           />
@@ -188,35 +188,35 @@ async componentDidMount() {
         <Input
           label="imageURL"
           // style={styles}
-          defaultValue={initialValues.imageURL} 
+          defaultValue={this.state.initialProfile.imageURL} 
           onChangeText={value => this.setState({ imageURL: value })}
           />
         
         <Input
           label="Instagram Username"
           // style={styles}
-          defaultValue={initialValues.instaUsername} 
+          defaultValue={this.state.initialProfile.instaUsername} 
           onChangeText={value => this.setState({ instaUsername: value })}
           />
         
         <Input
           label="Phone Number"
           // style={styles}
-          defaultValue={initialValues.phoneNumber} 
+          defaultValue={this.state.initialProfile.phoneNumber} 
           onChangeText={value => this.setState({ phoneNumber: value })}
           />
         
         <Input
           label="Business Phone Number"
           // style={styles}
-          defaultValue={initialValues.businessNumber} 
+          defaultValue={this.state.initialProfile.businessNumber} 
           onChangeText={value => this.setState({ businessNumber: value })}
           />
 
         <Input
           label="Description"
           // style={styles}
-          defaultValue={initialValues.description} 
+          defaultValue={this.state.initialProfile.description} 
           onChangeText={value => this.setState({ description: value })}
           />
         

@@ -36,25 +36,25 @@ class EditProfileScreen extends Component{
         //   .finally(() => {
         //     this.setState({ isLoading: false });
         //   });
-        console.log("asdfasdfasdfasdfasdfasdfasd");
+        // console.log("asdfasdfasdfasdfasdfasdfasd");
 
-        // const token = await SecureStore.getItemAsync('userToken');
+        // // const token = await SecureStore.getItemAsync('userToken');
 
-        return await fetch('http://165.227.25.15/api/user/get_profile/', {
-            method: 'GET',
-            headers: {
-                'Content-Type' : `application/json`,
-                'Authorization'    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
+        // return await fetch('http://165.227.25.15/api/user/get_profile/', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type' : `application/json`,
+        //         'Authorization'    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
 
-            }})
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log(responseJson.result);
-            this.setState({initialProfile: responseJson.result});
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        //     }})
+        // .then((response) => response.json())
+        // .then((responseJson) => {
+        //     console.log(responseJson.result);
+        //     this.setState({initialProfile: responseJson.result});
+        // })
+        // .catch((error) => {
+        //     console.error(error);
+        // });
 
         // try {
         //     let response = fetch('http://165.227.25.15/api/user/get_profile/', {
@@ -110,7 +110,6 @@ class EditProfileScreen extends Component{
     return(
       <Provider store= {store}>
         <EditProfileForm navigation={this.props.navigation}
-            initialValues={initialProfile}
         
         />
       </Provider>
