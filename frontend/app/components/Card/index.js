@@ -92,7 +92,6 @@ const Card = props => {
       <Ripple
         style={style || container(cardWidth, cardMargin)}
         onPress={onPress}
-        rippleColor={'#FFB6C1'}
         rippleContainerBorderRadius={15}
       >
             <View style={styles.container}>
