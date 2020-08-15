@@ -26,8 +26,6 @@ class UserViewSet(viewsets.ModelViewSet):
             if len(user) != 0:
                 response = {'message': 'User existed'}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-            print(os.urandom(32))
-            salt = os.urandom(32) # Remember this
             password = request.data['password']
 
             passwordKey = hashlib.pbkdf2_hmac(
@@ -36,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 str.encode(SALT), # Provide the salt
                 100000 # It is recommended to use at least 100,000 iterations of SHA-256 
             )
-            newUser = User.objects.create(email=request.data['email'], password=passwordKey)
+            newUser = User.objects.create(email=request.data['email'], password=passwordKey, instagram_username=request.data['email'], phone_number=request.data['email'])
             newUser.save()
             Token = jwt.JWT(header={"alg": "HS256"}, claims=newUser.email)
             Token.make_signed_token(JWTKey)
@@ -377,11 +375,13 @@ class SearchViewSet(viewsets.ModelViewSet):
             inputTags = request.data['tag']
             for i in inputTags:
                 tagObject = Tag.objects.get(name=i)
-                result = user.filter(tag__contains=[tagObject])
+                result = result.filter(tag__contains=[tagObject])
             
         if 'priceRange' in request.data:
-            priceObject = Price.objects.get(name=request.data['priceRange'])
-            result = result.filter(price=priceObject)
+            priceRanges = request.data['priceRange']
+            for i in priceRanges:
+                priceObject = Price.objects.get(name=request.data['priceRange'])
+                result = result.filter(price=priceObject)
 
         if 'city' in request.data:
             cityObject = City.objects.get(name=request.data['city'])
