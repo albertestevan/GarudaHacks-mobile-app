@@ -20,7 +20,10 @@ const MeScreen = ({ navigation }) => {
          <Button full onPress={() => navigation.navigate('Login')}><Text style={globalstyle.fullButtonPrimary}>Log In</Text></Button>
          <Text></Text>
          <Button full onPress={() => navigation.navigate('SignUp')}><Text style={globalstyle.fullButtonPrimary}>Sign Up</Text></Button>
-         <Text>Profile (After Signed Up and Create Profile) vvv</Text>
+
+         <Text></Text>
+         <Button full onPress={() => navigation.navigate('CreateProfile')}><Text style={globalstyle.fullButtonPrimary}>Create Profile</Text></Button>
+         <Text></Text>
          <Button full onPress={() => navigation.navigate('Profile')}><Text style={globalstyle.fullButtonPrimary}>Profile</Text></Button>
 
          </Content>

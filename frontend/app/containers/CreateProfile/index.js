@@ -4,12 +4,13 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import LoginForm from '../../components/LoginForm';
 import { Field, reduxForm } from 'redux-form';
+import CreateProfileForm from '../../components/CreateProfileForm/index.js';
 const store = createStore(allReducers);
- export default class LoginScreen extends Component{
+ export default class CreateProfileScreen extends Component{
   render(){
     return(
       <Provider store= {store}>
-        <LoginForm navigation={this.props.navigation}/>
+        <CreateProfileForm navigation={this.props.navigation}/>
       </Provider>
     )
   }
