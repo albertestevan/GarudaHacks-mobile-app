@@ -36,7 +36,7 @@ const validate = values => {
 
 
 
-class SimpleForm extends Component {
+class CreateProfileForm extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -214,4 +214,4 @@ async componentDidMount() {
 export default reduxForm({
   form: 'test',
   validate
-})(SimpleForm)
+})(CreateProfileForm)
