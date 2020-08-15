@@ -1,17 +1,30 @@
 import React from 'react';
 import { reduxForm, Field } from 'redux-form';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Text, TouchableOpacity } from 'react-native';
 
-import ReduxFormInput from '../../components/ReduxFormInput';
+import MyTextInput from '../../components/ReduxFormInput';
 
-function MyForm() {
+function MyForm(props) {
+
+    const formStates = ['asyncValidating', 'dirty', 'pristine', 'valid', 'invalid', 'submitting',
+    'submitSucceeded', 'submitFailed'];
+
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
       <Text>Email</Text>
       <Field
         name={'email'}
-        component={ReduxFormInput}
+        component={MyTextInput}
       />
+      <Text>The form is:</Text>
+      {
+        formStates.filter((state) => props[state]).map((state) => {
+          return <Text key={state}> - { state }</Text>
+        })
+      }
+      <TouchableOpacity onPress={props.handleSubmit}>
+        <Text>Submit!</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }

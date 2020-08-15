@@ -15,7 +15,7 @@ export default function SettingNavigator({ navigation }) {
 
   return (
         <Stack.Navigator>
-            <Stack.Screen name="Me" component={MeScreen} options={{ headerShown: true }}/>
+            <Stack.Screen name="Me" component={MeScreen} options={{ headerShown: false }}/>
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: "Login", headerShown: true }}/>
             <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerTitle: "Sign Up", headerShown: true }}/>
             <Stack.Screen name="Profile" component={ProfileNavigator} options={{ headerShown: false, gestureEnabled: false }}/>

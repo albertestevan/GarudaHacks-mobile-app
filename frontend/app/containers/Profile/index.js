@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView, Alert } from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right, Button } from 'native-base';
 
@@ -62,6 +62,22 @@ class ProfileScreen extends Component {
 
     componentDidUpdate(){
 
+    }
+
+    createTwoButtonAlert() {
+        Alert.alert(
+            "Sign Out",
+            "Are you sure?",
+            [
+              
+              {
+                text: "Cancel",
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => this.props.navigation.popToTop() }
+            ],
+            { cancelable: false }
+        );
     }
 
    render() {
@@ -160,7 +176,8 @@ class ProfileScreen extends Component {
                 <Text style={globalstyles.description}>Plans</Text>
                 <Text style={globalstyles.descriptionText}>Sample Plans</Text>
 
-                <Button full onPress={() => navigation.popToTop()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
+                {/* <Button full onPress={() => navigation.popToTop()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button> */}
+                <Button full onPress={() => this.createTwoButtonAlert()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
 
          
             </Content>
