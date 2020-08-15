@@ -172,34 +172,46 @@ class InitialValueViewset(viewsets.ModelViewSet):
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
 
-class SearchValueSet(viewsets.ModelViewSet):
+class SearchViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (permissions.AllowAny, )
 
-    @action(detail=False, methods=['GET'], permission_classes=[permissions.AllowAny])
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def search(self, request, pk=None):
-        if 'tags' in request.data: or 'priceRange' in request.data or 'city' in request.data:
-            user = User.objects.all()
-            result = User.objects.none()
-            if 'tags' in request.data:
-                inputTags = request.data['tags']
-                for i in inputTags:
-                    tagObject = Tag.objects.get(name=i)
-                    query = user.filter(tag__contains=[tagObject])
-                    result = result | query
+        user = User.objects.all()
+        result = User.objects.none()
+        
+        if 'tag' in request.data:
+            inputTags = request.data['tag']
+            for i in inputTags:
+                tagObject = Tag.objects.get(name=i)
+                query = user.filter(tag__contains=[tagObject])
+                result = result | query
             
-            if 'priceRange' in request.data:
-                priceObject = Price.objects.get(name=request.data['priceRange'])
-                result = result.filter(price=priceObject)
+        if 'priceRange' in request.data:
+            priceObject = Price.objects.get(name=request.data['priceRange'])
+            result = result.filter(price=priceObject)
 
-            if 'city' in request.data:
-                cityObject = City.objects.get(name=request.data['city'])
-                result = result.filter(city=cityObject)
+        if 'city' in request.data:
+            cityObject = City.objects.get(name=request.data['city'])
+            result = result.filter(city=cityObject)
             
-            serializer = UserSerializer(result, many=False)
-            response = {'message': 'Successful Filter', 'result': serializer.data}
-            return Response(response, status=status.HTTP_200_OK) 
-        else:
-            response = {'message': 'Please provide the filter parameter'}
-            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        limit = request.data['limit']
+        if (count(result) > limit):
+            result = result[:limit]
+
+        userPayload = UserSerializer(result, many=False)
+        for i in userPayload:
+            tagsPayload = []
+            for j in i["tags"]:
+                tagsPayload.append(Tag.objects.get(id=j).name)
+            i.tags=tagsPayload
+
+            i.city= City.objects.get(id=i["city"]).name
+            i.follower= Follower.objects.get(id=i["follower"]).name
+            i.price= Price.objects.get(id=i["price"]).name
+        
+        response = {'result': userPayload, 'message': 'Successful Filter', 'count': count(result), 'limit': limit}
+
+        return Response(response, status=status.HTTP_200_OK) 
