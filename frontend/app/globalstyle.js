@@ -22,8 +22,7 @@ export default globalstyles = StyleSheet.create({
       color : '#FF9800',
     },
     name: {
-      fontSize: 24,
-      marginTop: 20
+      fontSize: 24
    },
    description: {
       fontSize: 18,
@@ -36,10 +35,16 @@ export default globalstyles = StyleSheet.create({
       marginLeft: 40
    },
    tabRow: {
-      width: '50%',
-      alignItems: 'center', 
-      marginTop: 10, 
-    },
+    width: '50%',
+    alignItems: 'center', 
+    marginTop: 10, 
+  },
+   tabRowLoc: {
+    width: '50%',
+    alignItems: 'center', 
+    justifyContent:'center',
+    marginTop: 10, 
+  },
     tabLabelNumber: {
       color: 'black',
       fontSize: 22,
@@ -54,5 +59,44 @@ export default globalstyles = StyleSheet.create({
     },
     center:{
       alignItems: 'center',
+    },
+    marginLeftSm: {
+      marginLeft: 8
+    },
+    marginLeftMd: {
+      marginLeft: 16
+    },
+    marginLeftLg: {
+      marginLeft: 24
+    },
+    marginLeftXL: {
+      marginLeft: 32
+    },
+    marginBottomSm: {
+      marginBottom: 8
+    },
+    marginBottomMd: {
+      marginBottom: 16
+    },
+    marginBottomLg: {
+      marginBottom: 24
+    },
+    marginBottomXL: {
+      marginBottom: 32
+    },
+    marginLeftSm: {
+      marginLeft: 8
+    },
+    marginLeftMd: {
+      marginLeft: 16
+    },
+    marginLeftLg: {
+      marginLeft: 24
+    },
+    marginLeftXL: {
+      marginLeft: 32
+    },
+    row:{
+      flexDirection: 'row'
     }
   });
