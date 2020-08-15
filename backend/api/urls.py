@@ -7,6 +7,7 @@ from .views import UserViewSet, InitialValueViewset
 router = routers.DefaultRouter()
 router.register('user', UserViewSet)
 router.register('', InitialValueViewset)
+router.register('search', SearchViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
