@@ -1,6 +1,6 @@
-import React , { Component } from 'react';
+import React , { Component, useState } from 'react';
 import Expo from 'expo';
-import { View } from 'react-native';
+import { View , Picker, StyleSheet} from 'react-native';
 import { Container, Item, Input, Header, Body, Content, Title, Button, Text } from 'native-base';
 import { Field,reduxForm } from 'redux-form';
 
@@ -9,6 +9,11 @@ import LoadingScreen from '../../containers/Loading';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Icon from 'react-native-vector-icons/Feather';
+
+import RNPickerSelect from 'react-native-picker-select';
+
+import TagSelector from 'react-native-tag-selector';
+
 
 const validate = values => {
   const error= {};
@@ -40,12 +45,10 @@ class CreateProfileForm extends Component {
   constructor(props){
     super(props);
     this.state={
-      isReady: false,
       isLoading: true,
       cities: [],
       prices: [],
-      citiesDropdown: [],
-      city: '',
+      followers: [],
 
     };
     this.renderInput = this.renderInput.bind(this);
@@ -69,13 +72,13 @@ class CreateProfileForm extends Component {
 
 
 
-  renderDropdownPicker({ input, label, type, meta: { touched, error, warning } }){
+  renderDropdownPicker({ input, label, type, list, meta: { touched, error, warning } }){
 
     return( 
     <View>
         <Text>{label}</Text>
         <Text></Text>
-        <DropDownPicker
+        {/* <DropDownPicker
             items={[
                 {label: 'Ambon', value: 'ambon'},
                 {label: 'Balikpapan', value: 'balikpapan'},
@@ -90,9 +93,31 @@ class CreateProfileForm extends Component {
             onChangeItem={item => this.setState({
                 city: item.value
             })}
+        /> */}
+
+        <RNPickerSelect
+            onValueChange={(value) => value}
+            items={list}
         />
+        <Text></Text>
       </View>
     );
+};
+
+renderTagSelector({ input, label, type, list, meta: { touched, error, warning } }){
+
+  return( 
+  <View>
+      <Text>{label}</Text>
+      <Text></Text>
+          <TagSelector
+          // maxHeight={70}
+          // containerStyle = {globalstyles.tagSelectorContainer}
+          tags={tags}
+          onChange={(selected) => this.setState({ selectedTags: selected })} />
+      <Text></Text>
+    </View>
+  );
 };
 
 
@@ -102,6 +127,8 @@ class CreateProfileForm extends Component {
   async componentWillMount() {
    
   this.renderInput({ input, label, type, meta: { touched, error, warning } });
+  this.renderDropdownPicker({ input, label, type, meta: { touched, error, warning } });
+  this.renderTagSelector({ input, label, type, meta: { touched, error, warning } });
 }
 
 async componentDidMount() {
@@ -114,6 +141,14 @@ async componentDidMount() {
     //   .finally(() => {
     //     this.setState({ isLoading: false });
     //   });
+    fetch('http://165.227.25.15/api/followers/')
+      .then((response) => response.json())
+      .then((json) => {
+        this.setState({ followers: json.result });
+      })
+      .catch((error) => console.error(error))
+
+
     fetch('http://165.227.25.15/api/prices/')
       .then((response) => response.json())
       .then((json) => {
@@ -122,7 +157,6 @@ async componentDidMount() {
       .catch((error) => console.error(error))
       .finally(() => {
         this.setState({ isLoading: false });
-
       });
   }
 
@@ -160,7 +194,7 @@ async componentDidMount() {
         />
         <Field 
             label="Business Phone Number" 
-            name="bussinessNumber" 
+            name="businessNumber" 
             component={this.renderInput} 
         />
         <Field 
@@ -176,6 +210,19 @@ async componentDidMount() {
         <Field 
             label="City" 
             name="city" 
+            list={this.state.cities}
+            component={this.renderDropdownPicker} 
+        />
+        <Field 
+            label="Price Range" 
+            name="price" 
+            list={this.state.prices}
+            component={this.renderDropdownPicker} 
+        />
+        <Field 
+            label="Followers" 
+            name="followers" 
+            list={this.state.followers}
             component={this.renderDropdownPicker} 
         />
 

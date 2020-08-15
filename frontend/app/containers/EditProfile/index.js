@@ -1,25 +1,119 @@
-import React from 'react'
-import { TouchableOpacity, View, Text, StyleSheet, Button} from 'react-native'
+import React , { Component } from 'react';
+import allReducers from '../../reducers/index.js';
+import {createStore} from 'redux';
+import {Provider} from 'react-redux';
+import LoginForm from '../../components/LoginForm';
+import { Field, reduxForm } from 'redux-form';
+import CreateProfileForm from '../../components/CreateProfileForm/index.js';
+import { isLoaded } from 'expo-font';
+import LoadingScreen from '../Loading/index.js';
 
-import { Icon, Container, Header, Content, Left} from 'native-base'
+import * as SecureStore from 'expo-secure-store';
 
 
+const store = createStore(allReducers);
 
-const EditProfileScreen = ({ navigation }) => {
-  
-   return (
-      <Container>
+class EditProfileScreen extends Component{
 
-         <Content contentContainerStyle={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-         }}>
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            profile: []
+        };
+      }
 
-         <Text>EditProfileScreen</Text>
 
-         </Content>
-      </Container>
-   )
+    componentDidMount = async () => {
+    
+        // fetch('http://165.227.25.15/api/prices/')
+        //   .then((response) => response.json())
+        //   .then((json) => {
+        //     this.setState({ profile: json.result });
+        //   })
+        //   .catch((error) => console.error(error))
+        //   .finally(() => {
+        //     this.setState({ isLoading: false });
+        //   });
+        console.log("asdfasdfasdfasdfasdfasdfasd");
+
+        const token = await SecureStore.getItemAsync('userToken');
+
+        return await fetch('http://165.227.25.15/api/user/get_profile/', {
+            method: 'GET',
+            headers: {
+                // 'Authorization'    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
+                Authorization    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
+
+            }})
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson.result);
+            this.setState({initialProfile: responseJson.result});
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+        // try {
+        //     let response = fetch('http://165.227.25.15/api/user/get_profile/', {
+        //         method: 'GET',
+        //         headers: {
+        //             Authorization: `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`
+        //         },
+        //     })
+        //     let json = await response.json();
+
+        //     this.setState({
+        //         profile: json.result,
+        //         isLoading: false,
+        //     })
+        //     console.log("asdf");
+        //     return json.result;
+
+        // } catch (error) {
+        //         console.error(error);
+        // }
+
+        // await fetch('http://165.227.25.15/api/user/get_profile/', {
+        //     method: 'GET',
+        //     headers: {
+        //         Authorization: `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`
+        //     },
+        // })
+        //     .then((response) => response.json())
+        //     .then((json) => {
+        //         // if (responseJson.status == "success") {
+        //         //     console.log(this.state);
+        //         //     alert("your todolist is completed!!");
+        //         // }
+        //         this.setState({
+        //                     profile: json.result,
+        //                     isLoading: false,
+        //         })
+        //         console.log('asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfres JSON');
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //     });
+
+    }
+
+
+  render(){
+    const {isLoading} = this.state
+
+    if (isLoading){
+        return(<LoadingScreen/>)
+    }
+    return(
+      <Provider store= {store}>
+        <CreateProfileForm navigation={this.props.navigation}
+        initialValues={this.state.initialProfile}
+        />
+      </Provider>
+    )
+  }
 }
+
 export default EditProfileScreen
