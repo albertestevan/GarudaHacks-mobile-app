@@ -18,7 +18,7 @@ class  SearchScreen extends Component {
       super(props);
       this.state = {
          searchBarInput: "",
-         showModal:false
+         // showModal:false
       };
     }
 
@@ -52,7 +52,7 @@ class  SearchScreen extends Component {
                         <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>
-                <Modal
+                {/* <Modal
                   animationType="slide"
                   transparent={true}
                   visible={this.state.showModal}
@@ -73,8 +73,7 @@ class  SearchScreen extends Component {
                      </TouchableHighlight>
                   </View>
                </View>
-                   {/* <Text>Aiueo</Text> */}
-                </Modal>
+                </Modal> */}
             <ScrollView>
             <Text>{this.state.searchBarInput}</Text>
                <Content 
