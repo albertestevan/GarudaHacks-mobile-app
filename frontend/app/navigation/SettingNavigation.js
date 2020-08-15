@@ -13,9 +13,9 @@ export default function SettingNavigator({ navigation }) {
 
   return (
         <Stack.Navigator>
-            <Stack.Screen name="Setting" component={SettingScreen}/>
-            <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
-            <Stack.Screen name="ManagePlans" component={ManagePlansScreen}/>
+            <Stack.Screen name="Setting" component={SettingScreen} options={{ headerShown: true }}/>
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerTitle: "Edit Profile", headerShown: true }}/>
+            <Stack.Screen name="ManagePlans" component={ManagePlansScreen} options={{ headerTitle: "Manage Plans", headerShown: true }}/>
         </Stack.Navigator>
   );
 }

@@ -27,6 +27,10 @@ export default globalstyles = StyleSheet.create({
    menuText:{
     fontWeight: 'bold',
   },
+  fullButtonPrimary:{ 
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
    description: {
       fontSize: 18,
       marginTop: 20,

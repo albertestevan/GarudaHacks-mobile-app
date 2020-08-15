@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, Button, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView } from 'react-native'
 
-import { Icon, Container, Header, Content, Left, Right } from 'native-base';
+import { Icon, Container, Header, Content, Left, Right, Button } from 'native-base';
 
 import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
@@ -159,6 +159,9 @@ class  ProfileScreen extends Component {
 
                 <Text style={globalstyles.description}>Plans</Text>
                 <Text style={globalstyles.descriptionText}>Sample Plans</Text>
+
+                <Button full><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
+
          
             </Content>
         
@@ -195,6 +198,7 @@ const _shadowStyle = {
    }
    })
 };
+
 
 export default ProfileScreen;
 

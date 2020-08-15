@@ -14,7 +14,7 @@ export default function ProfileNavigator({ navigation }) {
   return (
         <Stack.Navigator>
             <Stack.Screen name="Profile" component={ProfileScreen} options={{headerShown: false}}/>
-            <Stack.Screen name="Setting" component={SettingNavigator}/>
+            <Stack.Screen name="Setting" component={SettingNavigator} options={{headerShown: false}}/>
         </Stack.Navigator>
   );
 }
