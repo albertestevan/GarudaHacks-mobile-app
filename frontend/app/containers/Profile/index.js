@@ -9,7 +9,9 @@ import ProfileHeader from '../../components/ProfileHeader'
 import globalstyles from '../../globalstyle';
 import Bundle from '../../components/Bundle';
 import TagSelector from 'react-native-tag-selector';
+import LoadingScreen from '../Loading';
 
+import * as SecureStore from 'expo-secure-store';
 import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 // name, phone number(login), business number(contact), image_url, description, instagram username, followers, city_id, created_at, updated_at
 import CardWrapper from '../../components/CardWrapper';
@@ -18,6 +20,8 @@ class ProfileScreen extends Component {
       super(props);
       this.state = {
         selectedTags: [],
+        initialProfile: [],
+        isLoading: true,
       };
     }
 
@@ -60,9 +64,42 @@ class ProfileScreen extends Component {
         }
     ]
 
-    componentDidUpdate(){
+    componentDidMount= async()=>{
+      const token = await SecureStore.getItemAsync('userToken');
 
+      console.log("asdfasdfasdfasdfasdfasdfasd", token);
+      return await fetch('http://165.227.25.15/api/user/get_profile/', {
+          method: 'GET',
+          headers: {
+            //   Authorization    : `Woing eyJhbGciOiJIUzI1NiJ9.YWRtaW5Ad29pbmcuaWQ.I0WazumU80kRfk0Dh38eYALCB5YFKxYZuEPEaraM-VM`,
+              Authorization    : `Woing ` + token,
+
+          }})
+      .then((response) => response.json())
+      .then((responseJson) => {
+          console.log(responseJson.result);
+          console.log("responseJson",responseJson);
+          if (responseJson.message){
+             console.log("no profile");
+             if(responseJson.message=="Invalid token! Make sure to include Woing <Token>!"){
+             this.setState({initialProfile: 'none'});
+             return
+             }else {         
+               this.setState({initialProfile: 'Message'});
+               return
+             }
+          }
+          this.setState({initialProfile: responseJson.result});
+      })
+      .catch((error) => {
+          console.error(error);
+      })
+      .finally(() => {
+
+        this.setState({ isLoading: false });
+      });
     }
+
 
     createTwoButtonAlert() {
         Alert.alert(
@@ -82,6 +119,27 @@ class ProfileScreen extends Component {
 
    render() {
         const { navigation } = this.props;
+      //   console.log("stateprof", this.state)
+      // if (this.state.initialProfile){
+        const {businessNumber, city, description, followers, gender, imageURL, instaUsername, name, priceRange, phoneNumber, tags} = this.state.initialProfile;
+      // }
+        console.log("tags", this.state.initialProfile)
+      //   console.log("this tags", this.tags)
+
+     if (this.state.isLoading || this.state.initialProfile == undefined || this.state.initialProfile =='Message') {
+      return <LoadingScreen />;
+    }
+    if (this.state.initialProfile == 'none') {
+      return(
+      <Container>
+         <ProfileHeader navigation={this.props.navigation} screenTitle="Profile"/>  
+         <View style={[globalstyles.center]}>
+            <Text style={globalstyles.description}>You have no profile, create one</Text>
+
+            <Button full onPress={() => navigation.navigate('CreateProfile')}><Text style={globalstyles.fullButtonPrimary}>Create Profile</Text></Button>
+         </View>
+      </Container>);
+    }
       return (
          <Container>
             <ProfileHeader navigation={this.props.navigation} screenTitle="Profile"/>        
@@ -98,8 +156,8 @@ class ProfileScreen extends Component {
                </View>
                <View style={[globalstyles.center]}>
                   <Content contentContainerStyle={[globalstyles.row, globalstyles.marginBottomSm]}>
-                     <MaterialCommunityIcons name="gender-female" size={26} color="#ff1694" />
-                     <Text style={globalstyles.name}>Jessica Hartanto Estevan</Text>
+                     <MaterialCommunityIcons name={gender == 'MALE'? 'gender-male':'gender-female'} size={26} color={gender == 'MALE'? '#0a11dd':'#ff1694'} />
+                     <Text style={globalstyles.name}>{name}</Text>
                   </Content>
                </View>
                <Content 
@@ -117,7 +175,7 @@ class ProfileScreen extends Component {
                      <Entypo name="location-pin" size={16} color="#808080" />
                      
                      <Animated.Text style={globalstyles.tabLabelText}>
-                        Surabaya
+                        {city}
                      </Animated.Text>
                      </Content>
                   </View>
@@ -135,7 +193,7 @@ class ProfileScreen extends Component {
                            <Entypo name="instagram" size={16} color="#808080" onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} />
                            
                            <Animated.Text onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
-                              jessicaHartanto
+                              {instaUsername}
                            </Animated.Text>
                         {/* </View> */}
                      </Content>
@@ -146,7 +204,7 @@ class ProfileScreen extends Component {
                   >
                   <View style={globalstyles.tabRow}>
                      <Animated.Text style={globalstyles.tabLabelNumber}>
-                        1.1K
+                        {followers}
                      </Animated.Text>
                      <Animated.Text style={globalstyles.tabLabelText}>
                         Followers
@@ -154,17 +212,17 @@ class ProfileScreen extends Component {
                   </View>
                   <View style={globalstyles.tabRow}>
                      <Animated.Text style={globalstyles.tabLabelNumber}>
-                        627
+                        {phoneNumber}
                      </Animated.Text>
                      <Animated.Text style={globalstyles.tabLabelText}>
-                        Posts
+                        phone
                      </Animated.Text>
                   </View>
                </Content>
             </Content>
             <Content  scrollEnabled={true}>
                 <Text style={globalstyles.description}>Price Range</Text>
-                <Text style={globalstyles.descriptionText}>500.000-1.000.000</Text>
+                <Text style={globalstyles.descriptionText}>{priceRange}</Text>
                
 
                 <Text style={globalstyles.description}>Tags</Text>
@@ -172,11 +230,11 @@ class ProfileScreen extends Component {
                   <Text style={globalstyles.descriptionText}>
                      {/* Selected: {this.state.selectedTags.map(tag => `${tag} `)} */}
                   </Text>
+                  {tags &&
                   <TagSelector
-                     // maxHeight={70}
-                     // containerStyle = {globalstyles.tagSelectorContainer}
-                     tags={this.tags}
+                     tags={tags}
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
+                  }
                <CardWrapper title="Bundles" titleColor='#dfdfdf' backgroundColor='#f4f3f3'>
                   <Bundle
                      name="Deluxe"
