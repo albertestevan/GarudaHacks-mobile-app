@@ -268,7 +268,7 @@ async componentDidMount() {
 
           })} 
           disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
-            !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers || !this.state.gender
+            !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers
           }
           >
             <Text>Submit</Text>
