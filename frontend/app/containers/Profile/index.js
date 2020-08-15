@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView, Alert } from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView, Linking, Alert} from 'react-native'
 
-import { Icon, Container, Header, Content, Left, Right, Button } from 'native-base';
+import { Icon, Container, Header, Content, Left, Right , Button} from 'native-base';
 
 import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
@@ -121,17 +121,23 @@ class ProfileScreen extends Component {
                      </Animated.Text>
                      </Content>
                   </View>
-                  <View style={globalstyles.tabRow}>
+                  <View style={globalstyles.tabRow} onPress={() => this.props.navigation.navigate('Setting')}>
+                     {/* <Button on>
+
+                     </Button> */}
                      <Content 
                      contentContainerStyle={{ 
                         flexDirection: 'row',
                      }}
-                     >
-                     <Entypo name="instagram" size={16} color="#808080" />
                      
-                     <Animated.Text style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
-                        jessicaHartanto
-                     </Animated.Text>
+                     >
+                        {/* <View onPress={() => this.props.navigation.navigate('Setting')}> */}
+                           <Entypo name="instagram" size={16} color="#808080" onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} />
+                           
+                           <Animated.Text onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
+                              jessicaHartanto
+                           </Animated.Text>
+                        {/* </View> */}
                      </Content>
                   </View>
                </Content>
