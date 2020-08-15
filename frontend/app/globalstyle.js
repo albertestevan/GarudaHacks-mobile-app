@@ -103,6 +103,30 @@ export default globalstyles = StyleSheet.create({
     marginLeftXL: {
       marginLeft: 32
     },
+    marginTopSm: {
+      marginTop: 8
+    },
+    marginTopMd: {
+      marginTop: 16
+    },
+    marginTopLg: {
+      marginTop: 24
+    },
+    marginTopXL: {
+      marginTop: 32
+    },
+    marginRightSm: { 
+      marginRight: 8
+    },
+    marginRightMd: {
+      marginRight: 16
+    },
+    marginRightLg: {
+      marginRight: 24
+    },
+    marginRightXL: {
+      marginRight: 32
+    },
     row:{
       flexDirection: 'row'
     }

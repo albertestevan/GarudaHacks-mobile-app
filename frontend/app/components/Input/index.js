@@ -1,6 +1,6 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-
+import globalstyles from '../../globalstyle';
 const INPUT_CHANGE = 'INPUT_CHANGE';
 const INPUT_FOCUS = 'INPUT_FOCUS';
 
@@ -30,6 +30,7 @@ const Input = props => {
     message: props.intialMessage,
     touched: false
   });
+  const [onFocus, setFocus] = useState(false);
 
   const { onInputChange, id } = props;
 
@@ -78,23 +79,26 @@ const Input = props => {
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid, message: msg });
   };
 
-  // const lostFocusHandler = () => {
-  //   dispatch({ type: INPUT_BLUR });
-  // };
+  const lostFocusHandler = () => {
+    // dispatch({ type: INPUT_BLUR });
+    setFocus(false);
+  };
    const FocusHandler = () => {
     dispatch({ type: INPUT_FOCUS });
+    setFocus(true);
   };
 
 
   return (
-    <View style={styles.formControl}>
-      <Text style={styles.label}>{props.label}</Text>
+    <View style={[globalstyles.marginLeftMd, globalstyles.marginRightXL]}>
+      <Text style={[styles.label]}>{props.label}</Text>
       <TextInput
         {...props}
-        style={styles.input}
+        style={onFocus? (styles.inputFocus):(styles.input)}
         value={inputState.value}
         onChangeText={textChangeHandler}
-        // onBlur={lostFocusHandler}
+        
+        onBlur={lostFocusHandler}
         onFocus={FocusHandler}
       />
       {!inputState.isValid && inputState.touched && (
@@ -107,17 +111,26 @@ const Input = props => {
 };
 
 const styles = StyleSheet.create({
-  formControl: {
-    width: '100%'
-  },
   label: {
+    fontFamily: 'Arial',
+    fontSize: 18,
     marginVertical: 8
   },
   input: {
+    fontFamily: 'Arial',
+    fontSize: 15,
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1
+    borderBottomColor: '#000000',
+    borderBottomWidth: 2
+  },
+  inputFocus: {
+    fontFamily: 'Arial',
+    fontSize: 15,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderBottomColor: '#009dff',
+    borderBottomWidth: 2
   },
   errorContainer: {
     marginVertical: 5

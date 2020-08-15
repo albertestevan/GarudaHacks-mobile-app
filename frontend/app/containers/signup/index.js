@@ -4,16 +4,16 @@ import {
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
   ActivityIndicator,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-
+import globalstyle from '../../globalstyle';
 import Input from '../../components/Input';
 import * as authActions from '../../store/actions/auth';
 
-import { Icon, Container, Content, Left } from 'native-base';
+import { Icon, Container, Content, Left, Button } from 'native-base';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -49,12 +49,9 @@ const AuthScreen = props => {
   const {navigation} = props;
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-        firstName: '',
-        lastName: '',
         email: '',
         password: '',
         confirmPassword: '',
-        referralId: '',
     },
     inputValidities: {
       email: false,
@@ -71,27 +68,29 @@ const AuthScreen = props => {
   }, [error]);
 
   const authHandler = async () => {
-    let action;
-      action = authActions.signup(
-        formState.inputValues.firstName,
-        formState.inputValues.lastName,
-        formState.inputValues.email,
-        formState.inputValues.password,
-        formState.inputValues.confirmPassword,
-        formState.inputValues.referralId
-      );
-    setError(null);
-    setIsLoading(true);
-    try {
-      await dispatch(action);
-    } catch (err) {
-      setError(err.message);
-      setIsLoading(false);
-      return;
-    }
-    setIsLoading(false);
-    // props.navigation.navigate('Home');
-    props.navigation.navigate('Login');
+    if (formState.inputValues.confirmPassword !== formState.inputValues.password)
+      {
+        Alert.alert("Password must Match")
+      }else{
+        let action;
+          action = authActions.signup(
+            formState.inputValues.email,
+            formState.inputValues.password,
+            formState.inputValues.confirmPassword
+          );
+        setError(null);
+        setIsLoading(true);
+        try {
+          await dispatch(action);
+        } catch (err) {
+          setError(err.message);
+          setIsLoading(false);
+          return;
+        }
+        setIsLoading(false);
+        // props.navigation.navigate('Home');
+        props.navigation.navigate('Login');
+      }
   };
 
   const inputChangeHandler = useCallback(
@@ -105,7 +104,7 @@ const AuthScreen = props => {
     },
     [dispatchFormState]
   );
-  
+  console.log(formState)
   return (
     <Container>
     <KeyboardAvoidingView
@@ -114,24 +113,6 @@ const AuthScreen = props => {
       style={styles.screen}
     >
           <ScrollView>
-            <Input
-                id="firstName"
-                label="First Name"
-                keyboardType="default"
-                autoCapitalize='none'
-                errorText="Please enter your first name."
-                onInputChange={inputChangeHandler}
-                initialValue=""
-            />
-            <Input
-                id="lastName"
-                label="Last Name"
-                keyboardType="default"
-                autoCapitalize='none'
-                errorText="Please enter your last name."
-                onInputChange={inputChangeHandler}
-                initialValue=""
-            />
             <Input
               id="email"
               label="E-Mail"
@@ -169,43 +150,27 @@ const AuthScreen = props => {
               onInputChange={inputChangeHandler}
               initialValue=""
             />
-            <Input
-              id="referralId"
-              label="Referral ID"
-              keyboardType="default"
-              autoCapitalize='characters'
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <View style={styles.buttonContainer}>
+            {/* <View style={styles.buttonContainer}> */}
               {isLoading ? (
                 <ActivityIndicator size="small"/>
               ) : formState.formIsValid ? (
-                <Button
-                  title={'Register'}
-                  onPress={authHandler}
-                />
+                <Button block primary style={[globalstyle.marginBottomSm, globalstyle.marginTopLg, globalstyle.marginLeftMd, globalstyle.marginRightMd]}
+                onPress={authHandler}>
+                <Text>Register</Text>
+              </Button>
               ): (
-                <Button
-                title={'Register'}
-                disabled
-              />
+                <Button block primary disabled style={[globalstyle.marginBottomSm, globalstyle.marginTopLg, globalstyle.marginLeftMd, globalstyle.marginRightMd]}
+                  onPress={authHandler}>
+                  <Text>Register</Text>
+                </Button>
               )}
-              {/* : (
-              <Button
-                title={'Register'}
-                onPress={authHandler}
-                />
-              )} */}
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                title={`Switch to Login`}
+            <Button block primary style={[globalstyle.marginBottomSm, globalstyle.marginTopLg, globalstyle.marginLeftMd, globalstyle.marginRightMd]}
                 onPress={() => {
-                    props.navigation.navigate('Login');
-                }}
-              />
-            </View>
+                  props.navigation.navigate('Login');
+              }}>
+                  <Text>Already have an account?</Text>
+                </Button>
+
           </ScrollView>
     </KeyboardAvoidingView>
     </Container>

@@ -4,17 +4,19 @@ import {
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
+  // Button,
   ActivityIndicator,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/Input';
 import * as authActions from '../../store/actions/auth';
-
-import { Icon, Container, Content, Left } from 'native-base';
+import { Field,reduxForm } from 'redux-form';
+import { Icon, Container, Content, Left, Button } from 'native-base';
 
 import * as SecureStore from 'expo-secure-store';
+import globalstyle from '../../globalstyle';
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const formReducer = (state, action) => {
@@ -40,11 +42,12 @@ const formReducer = (state, action) => {
   return state;
 };
 const AuthScreen = props => {
+  const { handleSubmit, reset, navigation } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const dispatch = useDispatch();
 
-  const {navigation} = props;
+  // const {navigation} = props;
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -127,6 +130,7 @@ const AuthScreen = props => {
               callback={getInitial}
             />
             <Input
+              style={{}}
               id="password"
               label="Password"
               keyboardType="default"
@@ -139,30 +143,29 @@ const AuthScreen = props => {
               onInputChange={inputChangeHandler}
               initialValue=""
             />
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="small"/>
-              ) : 
-              formState.formIsValid ? (
-                <Button
-                  title={'Login'}
-                  onPress={authHandler}
-                />
-              ): (
-                <Button
-                title={'Login'}
-                disabled
-              />
-              )}
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                title={`Switch to Sign Up`}
-                onPress={() => {
-                    props.navigation.navigate('SignUp');
-                }}
-              />
-            </View>
+            {isLoading ? (
+              <ActivityIndicator size="small"/>
+            ) : 
+            formState.formIsValid ? (
+              <Button block primary style={[globalstyle.marginBottomSm, globalstyle.marginTopLg, globalstyle.marginLeftMd, globalstyle.marginRightMd]}
+
+              onPress={authHandler}>
+              <Text>Login</Text>
+            </Button>
+            ): (
+              <Button block primary disabled style={[globalstyle.marginBottomSm, globalstyle.marginTopLg, globalstyle.marginLeftMd, globalstyle.marginRightMd]}
+              >
+                <Text>Login</Text>
+              </Button>
+            )}
+            <Button block primary style={[globalstyle.marginLeftMd, globalstyle.marginRightMd]}
+              title={`Switch to Sign Up`}
+              onPress={() => {
+                  props.navigation.navigate('SignUp');
+              }}
+            >
+              <Text>Don't have an account?</Text>
+            </Button>
           </ScrollView>
     </KeyboardAvoidingView>
     </Container>
