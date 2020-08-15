@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import { Dimensions, StyleSheet, ScrollView, Text} from 'react-native'
+import { Dimensions, StyleSheet, ScrollView, Text, Modal} from 'react-native'
 import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
 // import { Card } from "@paraboly/react-native-card";
-import Card from '../../components/Card'
+import Card from '../../components/Card';
 
 const { width } = Dimensions.get("window");
 
@@ -16,7 +16,8 @@ class  SearchScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
-
+         searchBarInput: "",
+         showModal:false
       };
     }
 
@@ -30,6 +31,7 @@ class  SearchScreen extends Component {
 
    render() {
       const { navigation } = this.props;
+      console.log("filter state", this.state);
       return (
          <Container>     
             <Header searchBar rounded>
@@ -48,6 +50,7 @@ class  SearchScreen extends Component {
                         <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>
+                <Modal>adadad</Modal>
             <ScrollView>
             <Text>{this.state.searchBarInput}</Text>
                <Content 
