@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Dimensions, StyleSheet, ScrollView, Text, Modal} from 'react-native'
+import { Dimensions, StyleSheet, ScrollView, Text, Modal, View, TouchableHighlight} from 'react-native'
 import { Icon, Container, Header, Content, Left, Right, Item, Input, Button} from 'native-base';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
@@ -10,6 +10,7 @@ const { width } = Dimensions.get("window");
 
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FilterScreen from '../Filter';
 
 
 class  SearchScreen extends Component {
@@ -47,10 +48,33 @@ class  SearchScreen extends Component {
                     </Item>
 
                     <Button transparent onPress={() => navigation.navigate('Filter')}>
+                    {/* <Button transparent onPress={() => this.setState({showModal:true})}> */}
                         <MaterialCommunityIcons name="filter-variant" size={30}/>
                     </Button>
                 </Header>
-                <Modal>adadad</Modal>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={this.state.showModal}
+                  onRequestClose={() => {
+                  Alert.alert("Modal has been closed.");}}
+                >
+               <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                     <Text style={styles.modalText}>Hello World!</Text>
+                     <FilterScreen props={this.props}/>
+                     <TouchableHighlight
+                     style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                     onPress={() => {
+                        this.setState({showModal:false});
+                     }}
+                     >
+                     <Text style={styles.textStyle}>Hide Modal</Text>
+                     </TouchableHighlight>
+                  </View>
+               </View>
+                   {/* <Text>Aiueo</Text> */}
+                </Modal>
             <ScrollView>
             <Text>{this.state.searchBarInput}</Text>
                <Content 
@@ -201,5 +225,44 @@ const styles = StyleSheet.create({
    },
    buttonContainer: {
      marginTop: 10
-   }
+   },
+      centeredView: {
+        flex: 1,
+      //   justifyContent: "center",
+      //   alignItems: "center",
+         height: 1000,
+        marginTop: 22
+      },
+      modalView: {
+         height: 600,
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+      //   alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5
+      },
+      openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      }
+    
  });
