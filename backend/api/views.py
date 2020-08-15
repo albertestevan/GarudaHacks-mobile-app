@@ -96,8 +96,9 @@ class UserViewSet(viewsets.ModelViewSet):
             user.price = Price.objects.get(name=request.data['priceRange'])
             user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
+            tagsPayload = []
             for i in inputTags:
-                tag = Tag.objects.get(id=i)
+                tag = Tag.objects.get(name=i)
                 tagsPayload.append({
                     "id": tag.id,
                     "name": tag.name
@@ -120,6 +121,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 "priceRange": user.price.name,
                 "followers": user.follower.name,
                 "gender": user.gender.name,
+                "tags": tagsPayload
             }
             response = {'message': 'Successfully verified User', 'result': payload}
             return Response(response, status=status.HTTP_200_OK)
@@ -145,7 +147,7 @@ class UserViewSet(viewsets.ModelViewSet):
             user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
             for i in inputTags:
-                tag = Tag.objects.get(id=i)
+                tag = Tag.objects.get(id=name)
                 tagsPayload.append({
                     "id": tag.id,
                     "name": tag.name
@@ -167,6 +169,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 "priceRange": user.price.name,
                 "followers": user.follower.name,
                 "gender": user.gender.name,
+                "tags": tagsPayload
             }
             response = {'message': 'Successfully updated User', 'result': payload}
             return Response(response, status=status.HTTP_200_OK)
