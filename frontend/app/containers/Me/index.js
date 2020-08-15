@@ -34,7 +34,6 @@ const MeScreen = (props) => {
                <Button full onPress={() => navigation.navigate('Profile')}><Text style={globalstyle.fullButtonPrimary}>Profile</Text></Button>
                <Text></Text>
                <Button full onPress={() => dispatch(authActions.signOut())}><Text style={globalstyle.fullButtonPrimary}>signout</Text></Button>
-
          </Content>
          :
             <Content contentContainerStyle={{

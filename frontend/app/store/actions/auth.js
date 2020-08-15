@@ -109,7 +109,7 @@ export const login = (email, password) => {
       await SecureStore.setItemAsync('credentialsPassword', password);
       await SecureStore.setItemAsync('credentialsToken', resData);
       // //token for operations
-      await SecureStore.setItemAsync('userToken', resData.token);
+      await SecureStore.setItemAsync('userToken', resData);
 
       dispatch(
         authenticate(
