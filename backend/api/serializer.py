@@ -20,7 +20,7 @@ class BundleSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ('name',)
+        fields = '__all__'
 
 class FollowerSerializer(serializers.ModelSerializer):
     class Meta:
