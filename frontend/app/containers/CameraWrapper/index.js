@@ -27,7 +27,7 @@ function CameraWrapper(){
             Alert.alert(message);
             return
       }else{
-         console.log("success resp", resData);
+         // console.log("success resp", resData);
       }
 
 

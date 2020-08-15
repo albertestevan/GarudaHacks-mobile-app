@@ -1,6 +1,6 @@
 import React , { Component, useState } from 'react';
 import Expo from 'expo';
-import { View , Picker, StyleSheet} from 'react-native';
+import { View , Picker, StyleSheet, Image} from 'react-native';
 import { Container, Item, Header, Body, Content, Title, Button, Text } from 'native-base';
 
 import LoadingScreen from '../../containers/Loading';
@@ -16,8 +16,9 @@ import { Input } from 'react-native-elements';
 import globalstyles from '../../globalstyle';
 
 import * as SecureStore from 'expo-secure-store';
+import Media from '../../components/Media';
 
-
+import avatar from "../../../assets/avatar.png";
 const validate = values => {
   const error= {};
   error.email= '';
@@ -52,11 +53,35 @@ export default class CreateProfileForm extends Component {
       followers: [],
       genders: [],
       tags: [],
-
+      image: null
     };
   }
 
-  
+  ImageHandler = async()=>{
+    const form = new FormData();
+    form.append("file", {uri: this.state.image, name: 'profileImage.jpg', type: 'image/jpeg'})
+
+    const response = await fetch('http://165.227.25.15/api/file/', {
+    method: 'POST',
+    body: form
+    }).catch(function(error) {
+       console.log('There has been a problem with your fetch operation: ');
+       // ADD THIS THROW error
+       // throw error;
+    });
+    const resData = await response.json();
+    console.log(resData);
+    if (resData.error) {
+          let message = resData.error;
+          console.log(resData.error);
+          // throw new Error(message);
+          Alert.alert(message);
+          return null;
+    }else{
+       console.log("success resp", resData);
+    }
+    return 'http://165.227.25.15'+resData.file;
+}
 
 async componentDidMount() {
     fetch('http://165.227.25.15/api/cities/')
@@ -103,7 +128,8 @@ async componentDidMount() {
   async onSubmit(profile) {
     console.log("onsubmit");
     console.log(profile.name);
-    console.log(profile.imageURL);
+    const imageUrl = await this.ImageHandler();
+    console.log(imageUrl);
 
     console.log(profile.instaUsername);
 
@@ -153,6 +179,10 @@ async componentDidMount() {
         });
   }
 
+  imageCallback=(image)=> {
+    this.setState({image: image});
+  }
+
   render(){
      const { handleSubmit, reset } = this.props;
 
@@ -172,11 +202,15 @@ async componentDidMount() {
 
           />
         
-        <Input
+        {/* <Input
           label="imageURL"
           // style={styles}
           onChangeText={value => this.setState({ imageURL: value })}
-          />
+          /> */}
+        <View style={{alignItems:'center'}}>
+          {<Image source={this.state.image ? { uri: this.state.image } : avatar} style={{ width: 200, height: 200 }} />}
+        </View>
+        <Media description="camera roll" setImage={this.imageCallback}/>
         
         <Input
           label="Instagram Username"
@@ -267,9 +301,9 @@ async componentDidMount() {
             gender: "MALE"
 
           })} 
-          disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
-            !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers
-          }
+          // disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
+          //   !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers
+          // }
           >
             <Text>Submit</Text>
           </Button>
