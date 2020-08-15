@@ -334,7 +334,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         gendersPayload = GenderSerializer(genders, many=True).data
         payload = []
         for i in gendersPayload:
-            payload.append(i["name"])
+            payload.append({
+                "label": i["name"],
+                "value": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
     
@@ -369,24 +372,34 @@ class SearchViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def search(self, request, pk=None):
         user = User.objects.filter(isVerified=True)
-        result = User.objects.filter(isVerified=True)
+        result = User.objects.none()
         
         if 'tag' in request.data:
             inputTags = request.data['tag']
             for i in inputTags:
                 tagObject = Tag.objects.get(name=i)
-                result = result.filter(tag__contains=[tagObject])
-            
+                result = result | user.filter(tag__contains=[tagObject])
+            user = result
+
         if 'priceRange' in request.data:
             priceRanges = request.data['priceRange']
             for i in priceRanges:
-                priceObject = Price.objects.get(name=request.data['priceRange'])
-                result = result.filter(price=priceObject)
+                priceObject = Price.objects.get(name=i)
+                result = result | user.filter(price=priceObject)
+            user = result
 
         if 'city' in request.data:
-            cityObject = City.objects.get(name=request.data['city'])
-            result = result.filter(city=cityObject)
+            cities = request.data['city']
+            for i in cities:
+                cityObject = City.objects.get(name=i)
+                result = result | user.filter(city=cityObject)
+            user = result
 
+        if 'search' in request.data:
+            result = result | User.objects.filter(name__search=request.data['search'])
+            result = result | user.filter(description__search=request.data['search'])
+            user = result
+            
         limit = request.data['limit']
         if (result.count() > int(limit)):
             result = result[:int(limit)]
