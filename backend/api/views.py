@@ -97,8 +97,11 @@ class UserViewSet(viewsets.ModelViewSet):
             user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
             for i in inputTags:
-                tag = Tag.objects.get(name=i)
-                user.tags.add(tag)
+                tag = Tag.objects.get(id=i)
+                tagsPayload.append({
+                    "id": tag.id,
+                    "name": tag.name
+                })
             user.description = request.data['description']
             user.phone_number = request.data['phoneNumber']
             user.business_number = request.data['businessNumber']
@@ -142,8 +145,11 @@ class UserViewSet(viewsets.ModelViewSet):
             user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
             for i in inputTags:
-                tag = Tag.objects.get(name=i)
-                user.tags.add(tag)
+                tag = Tag.objects.get(id=i)
+                tagsPayload.append({
+                    "id": tag.id,
+                    "name": tag.name
+                })
             user.description = request.data['description']
             user.phone_number = request.data['phoneNumber']
             user.business_number = request.data['businessNumber']
@@ -170,36 +176,88 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['GET'])
     def get_profile(self, request, pk=None):
-        phone = '+' + request.query_params.get('phone').strip()
-        print(phone)
-        if phone != None:
-            try:
-                user = User.objects.get(phone_number=phone)
-                userPayload = UserSerializer(user, many=False).data
-            except User.DoesNotExist:
-                response = {'message': 'User does not exist!'}
-                return Response(response, status=status.HTTP_404_NOT_FOUND)
-            tagsPayload = []
-            for i in userPayload["tags"]:
-                tagsPayload.append(Tag.objects.get(id=i).name)
-            payload = {
-                "name": userPayload["name"],
-                "imageURL": userPayload["image_url"],
-                "instaUsername": userPayload["instagram_username"],
-                "phoneNumber": userPayload["phone_number"],
-                "businessNumber": userPayload["business_number"],
-                "description": userPayload["description"],
-                "tags": tagsPayload,
-                "city": user.city.name,
-                "priceRange": user.price.name,
-                "followers": user.follower.name,
-            }
-            response = {'result': payload}
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        tagsPayload = []
+        userPayload = UserSerializer(user, many=False).data
+        for i in userPayload["tags"]:
+            tag = Tag.objects.get(id=i)
+            tagsPayload.append({
+                "id": tag.id,
+                "name": tag.name
+            })
+        payload = {
+            "name": userPayload["name"],
+            "imageURL": userPayload["image_url"],
+            "instaUsername": userPayload["instagram_username"],
+            "phoneNumber": userPayload["phone_number"],
+            "businessNumber": userPayload["business_number"],
+            "description": userPayload["description"],
+            "tags": tagsPayload,
+            "city": user.city.name,
+            "priceRange": user.price.name,
+            "followers": user.follower.name,
+            "gender": user.gender.name,
+        }
+        response = {'result': payload}
+        return Response(response, status=status.HTTP_200_OK) 
+    
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def add_bundle(self, request, pk=None):
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        if "title" in request.data and "description" in request.data and "price" in request.data:
+            newBundle = Bundle.objects.create(user_id=user, name=request.data["title"], description=request.data["description"], price=request.data['price'])
+            newBundle.save()
+            response = {'message': "Bundle added!"}
             return Response(response, status=status.HTTP_200_OK) 
         else:
-            response = {'message': 'Please provide phone url parameter ex:"?phone=+1234567890'}
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)     
+
+    @action(detail=False, methods=['GET'], permission_classes=[permissions.AllowAny])
+    def get_bundle(self, request, pk=None):
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        bundles = Bundle.objects.filter(user_id=user)
+        payload = []
+        for i in bundles:
+            payload.append({
+                "id": i.id,
+                "title": i.name,
+                "description": i.description,
+                "price": i.price
+            })
+        response = {'result': payload}
+        return Response(response, status=status.HTTP_200_OK) 
     
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def update_bundle(self, request, pk=None):
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        if 'id' in request.data and "title" in request.data and "description" in request.data and "price" in request.data:
+            try:
+                bundle = Bundle.objects.get(id=request.data['id'])
+            except Bundle.DoesNotExist:
+                response = {'message': 'Bundle does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            bundle.name = request.data['title']
+            bundle.description = request.data['description']
+            bundle.price = request.data['price']
+            bundle.save()
+            response = {'message': "Bundle updated!"}
+            return Response(response, status=status.HTTP_200_OK) 
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)     
 class InitialValueViewset(viewsets.ModelViewSet):
     queryset = User.objects.all()
     # authentication_classes = (TokenAuthentication, )
@@ -259,7 +317,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         pricesPayload = PriceSerializer(prices, many=True).data
         payload = []
         for i in pricesPayload:
-            payload.append(i["name"])
+            payload.append({
+                "label": i["name"],
+                "value": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
     
@@ -279,7 +340,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         followersPayload = FollowerSerializer(followers, many=True).data
         payload = []
         for i in followersPayload:
-            payload.append(i["name"])
+            payload.append({
+                "label": i["name"],
+                "value": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
 
@@ -325,7 +389,11 @@ class SearchViewSet(viewsets.ModelViewSet):
         for i in userPayload:
             tagsPayload = []
             for j in i["tags"]:
-                tagsPayload.append(Tag.objects.get(id=j).name)
+                tag = Tag.objects.get(id=j)
+                tagsPayload.append({
+                    "id": tag.id,
+                    "name": tag.name
+                })
             i["tags"] = tagsPayload
             
             i["city"] = City.objects.get(id=i["city"]).name
