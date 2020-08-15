@@ -8,9 +8,9 @@ from rest_framework.parsers import FileUploadParser
 
 from datetime import *
 
-from .models import User, City, Bundle, Tag, Follower, Price
+from .models import User, City, Bundle, Tag, Follower, Price, Gender
 from .serializer import UserSerializer, CitySerializer, BundleSerializer, TagSerializer, FollowerSerializer, PriceSerializer
-from .constants import PRICES, FOLLOWERS, CITIES, TAGS
+from .constants import PRICES, FOLLOWERS, CITIES, TAGS, GENDERS
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -116,20 +116,16 @@ class InitialValueViewset(viewsets.ModelViewSet):
             if request.data['secretKey'] != "woing":
                 response = {'message': "Wrong secretKey"}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST) 
-            for i in Follower.objects.all():
-                i.delete()
-            for i in Price.objects.all():
-                i.delete()
-            for i in City.objects.all():
-                i.delete()
             for i, j in FOLLOWERS:
-                Follower.objects.create(id=i, name=j)
+                Follower.objects.update_or_create(id=i, name=j)
             for i, j in PRICES:
-                Price.objects.create(id=i, name=j)
+                Price.objects.update_or_create(id=i, name=j)
             for i, j in CITIES:
-                City.objects.create(id=i, name=j)
+                City.objects.update_or_create(id=i, name=j)
             for i, j in TAGS:
                 Tag.objects.update_or_create(id=i, name=j)
+            for i, j in GENDERS:
+                Gender.objects.update_or_create(id=i, name=j)
             response = {'result': "Success"}
             return Response(response, status=status.HTTP_200_OK) 
         else:
