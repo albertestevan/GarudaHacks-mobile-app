@@ -34,20 +34,9 @@ class FilterLocationScreen extends Component {
 
         const { navigation } = this.props;
         const { data, isLoading } = this.state;
-        // const menuList = 
-        // [
-        //     //Haven't called api for city list
-        //     "Ambon",
-        //     "Balikpapan",
-        //     "Banda Aceh",
-        //     "Bandung",
-        //     "Banjar",
-        //     "Banjarbaru",
-        // ]
         if (isLoading) {
             return(<LoadingScreen/>)
         }
-
         return (
             <Container>
 
@@ -57,19 +46,19 @@ class FilterLocationScreen extends Component {
             
             <List>
                 {data.map(city => (
-                <ListItem onPress={() => this.setState({ [city]: !this.state[city]})} selected>
+                <ListItem onPress={() => this.setState({ [city.value]: !this.state[city.value]})} selected>
                   <Left>
                     <Content contentContainerStyle={{
                           padding: 10,
                           flexDirection: 'row',
                         }}>
-                        {this.state[city] ? (
+                        {this.state[city.value] ? (
                         <Ionicons name="md-checkmark" size={20} style={styles.pickedText}/>
                         ) : null}
 
-                        {this.state[city] ? (
-                        <Text style={styles.pickedText}>{city}</Text>
-                        ) : <Text style={styles.regularText}>{city}</Text>}
+                        {this.state[city.value] ? (
+                        <Text style={styles.pickedText}>{city.value}</Text>
+                        ) : <Text style={styles.regularText}>{city.value}</Text>}
                     </Content>
                   </Left>
                   <Right>
