@@ -5,30 +5,49 @@ import { Icon, Container, Header, Content, Left, Right, List, ListItem} from 'na
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
+import LoadingScreen from '../Loading';
 
 class FilterLocationScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            data: [],
+            isLoading: true,
         };
+      }
+
+      componentDidMount() {
+        fetch('http://165.227.25.15/api/cities/')
+          .then((response) => response.json())
+          .then((json) => {
+            this.setState({ data: json.result });
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+            this.setState({ isLoading: false });
+          });
       }
     
 
     render() {
 
         const { navigation } = this.props;
-        const menuList = 
-        [
-            //Haven't called api for city list
-            "Ambon",
-            "Balikpapan",
-            "Banda Aceh",
-            "Bandung",
-            "Banjar",
-            "Banjarbaru",
-        ]
+        const { data, isLoading } = this.state;
+        // const menuList = 
+        // [
+        //     //Haven't called api for city list
+        //     "Ambon",
+        //     "Balikpapan",
+        //     "Banda Aceh",
+        //     "Bandung",
+        //     "Banjar",
+        //     "Banjarbaru",
+        // ]
+        if (isLoading) {
+            return(<LoadingScreen/>)
+        }
+
         return (
             <Container>
 
@@ -37,20 +56,20 @@ class FilterLocationScreen extends Component {
                 }}>
             
             <List>
-                {menuList.map(menu => (
-                <ListItem onPress={() => this.setState({ [menu]: !this.state[menu]})} selected>
+                {data.map(city => (
+                <ListItem onPress={() => this.setState({ [city]: !this.state[city]})} selected>
                   <Left>
                     <Content contentContainerStyle={{
                           padding: 10,
                           flexDirection: 'row',
                         }}>
-                        {this.state[menu] ? (
+                        {this.state[city] ? (
                         <Ionicons name="md-checkmark" size={20} style={styles.pickedText}/>
                         ) : null}
 
-                        {this.state[menu] ? (
-                        <Text style={styles.pickedText}>{menu}</Text>
-                        ) : <Text style={styles.regularText}>{menu}</Text>}
+                        {this.state[city] ? (
+                        <Text style={styles.pickedText}>{city}</Text>
+                        ) : <Text style={styles.regularText}>{city}</Text>}
                     </Content>
                   </Left>
                   <Right>
