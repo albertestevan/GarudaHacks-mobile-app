@@ -34,7 +34,7 @@ export default function HomeNavigator({ navigation }) {
     const token = await SecureStore.getItemAsync('userToken');
     if (token) {
       try {
-        console.log("token", token)
+        // console.log("token", token)
         let action;
         action = authActions.authenticate(
           token

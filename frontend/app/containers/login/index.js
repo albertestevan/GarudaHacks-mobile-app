@@ -87,14 +87,13 @@ const AuthScreen = props => {
     setIsLoading(true);
     try {
       await dispatch(action);
-    //   props.navigation.navigate('Shop');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
       return;
     }
     setIsLoading(false);
-    props.navigation.navigate('Home');
+    props.navigation.navigate('Me');
   };
 
   const inputChangeHandler = useCallback(

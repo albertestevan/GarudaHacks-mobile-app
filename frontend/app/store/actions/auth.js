@@ -25,20 +25,20 @@ export const authenticate = (token) => {
   };
 };
 
-export const signup = (firstName, lastName, email, password, confirmPassword, referralCode) => {
+export const signup = (email, password) => {
+  console.log("signup", email, password);
   return async dispatch => {
     const response = await fetch(
-      'https://veyron-staging.liku.id/register',
+      'http://165.227.25.15/api/user/signup/',
       {
         method: 'POST',
         body: JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
           email: email,
-          password: password,
-          confirmPassword:  confirmPassword,
-          referralCode: referralCode
-        })
+          password: password
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     ).catch(function(error) {
       console.log('There has been a problem with your fetch operation: ');
@@ -47,22 +47,12 @@ export const signup = (firstName, lastName, email, password, confirmPassword, re
       });
 
     const resData = await response.json();
-    if (resData.error) {
-        let message = resData.error;
+    if (resData.error || resData.detail) {
+        let message = resData.error || resData.detail;
         console.log(resData.error);
         throw new Error(message);
     }
-
-    //do not save token/data since user has to verify acc first before use.
-    // await SecureStore.setItemAsync('credentialsEmail', email);
-    // await SecureStore.setItemAsync('credentialsPassword', password);
-    // await SecureStore.setItemAsync('credentialsToken', resData.token);
-    // await SecureStore.setItemAsync('userToken', resData.token);
-    // dispatch(
-    //     authenticate(
-    //       resData.token
-    //     )
-    //   );
+    console.log("token signup", resData);
   };
 };
 
@@ -91,13 +81,16 @@ export const login = (email, password) => {
     } else{
 
       const response = await fetch(
-        `https://veyron-staging.liku.id/login`,
+        `http://165.227.25.15/api/user/signin/`,
         {
           method: 'POST',
           body: JSON.stringify({
             email,
             password,
           }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
       ) .catch(function(error) {
         console.log("There has been a problem with your fetch operation: ");
@@ -106,10 +99,11 @@ export const login = (email, password) => {
         });
 
       const resData = await response.json();
-      if (resData.error) {
-        let err = resData.error;
+      if (resData.error || resData.detail) {
+        let err = resData.error || resData.detail;
         message = '';
         console.log(resData.error);
+        console.log(resData.detail);
         if (err == 'crypto/bcrypt: hashedPassword is not the hash of the given password') {
           message = "Wrong Password! Please try again.";
         } else{
@@ -117,11 +111,11 @@ export const login = (email, password) => {
         }
         throw new Error(message);
       }
-
+      console.log('response', resData)
       await SecureStore.setItemAsync('credentialsEmail', email);
       await SecureStore.setItemAsync('credentialsPassword', password);
       await SecureStore.setItemAsync('credentialsToken', resData.token);
-      //token for operations
+      // //token for operations
       await SecureStore.setItemAsync('userToken', resData.token);
 
       dispatch(

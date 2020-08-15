@@ -35,7 +35,7 @@ export default function HomeScreen(props) {
                   <Button title="Register" onPress={() => navigation.navigate('SignUp')}/>
                </View>
             }
-            <GetLocation />
+            {/* <GetLocation /> */}
             <Button title="Media" onPress={() => navigation.navigate('CameraWrapper')} />
          </Content>
       </Container>
