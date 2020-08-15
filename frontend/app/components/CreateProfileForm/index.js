@@ -15,6 +15,7 @@ import { Input } from 'react-native-elements';
 
 import globalstyles from '../../globalstyle';
 
+import * as SecureStore from 'expo-secure-store';
 
 
 const validate = values => {
@@ -120,7 +121,7 @@ async componentDidMount() {
 
     const token = await SecureStore.getItemAsync('userToken')
 
-    await fetch('http://165.227.25.15/api/user/verify_profile/', {
+    await fetch('http://165.227.25.15/api/user/verify_user/', {
             method: 'POST',
             headers: {
                 'Content-Type' : `application/json`,
@@ -143,7 +144,7 @@ async componentDidMount() {
           })
         .then((response) => response.json())
         .then((responseJson) => {
-            console.log(responseJson.message);
+            console.log(responseJson);
             this.setState({ isLoading: false });
         })
         .catch((error) => {
@@ -258,11 +259,13 @@ async componentDidMount() {
             businessNumber: this.state.businessNumber,
             description: this.state.description,
             // tags: this.state.tags,
-            tags: this.state.tags,
+            tags: ["AUTOMOTIVE", "BEAUTY"],
             city: this.state.city,
             priceRange: this.state.priceRange,
             followers: this.state.followers,
-            gender: this.state.gender
+            // gender: this.state.gender
+            gender: "MALE"
+
           })} 
           disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
             !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers || !this.state.gender
