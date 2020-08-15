@@ -26,7 +26,6 @@ class UserViewSet(viewsets.ModelViewSet):
             if len(user) != 0:
                 response = {'message': 'User existed'}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-            salt = os.urandom(32) # Remember this
             password = request.data['password']
 
             passwordKey = hashlib.pbkdf2_hmac(
@@ -35,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 str.encode(SALT), # Provide the salt
                 100000 # It is recommended to use at least 100,000 iterations of SHA-256 
             )
-            newUser = User.objects.create(email=request.data['email'], password=passwordKey, instagram_username=email, phone_number=email)
+            newUser = User.objects.create(email=request.data['email'], password=passwordKey, instagram_username=request.data['email'], phone_number=request.data['email'])
             newUser.save()
             Token = jwt.JWT(header={"alg": "HS256"}, claims=newUser.email)
             Token.make_signed_token(JWTKey)
