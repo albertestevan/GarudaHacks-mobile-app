@@ -7,12 +7,12 @@ import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
 
 import globalstyles from '../../globalstyle';
-
+import Bundle from '../../components/Bundle';
 import TagSelector from 'react-native-tag-selector';
 
 import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 // name, phone number(login), business number(contact), image_url, description, instagram username, followers, city_id, created_at, updated_at
-
+import CardWrapper from '../../components/CardWrapper';
 class ProfileScreen extends Component {
    constructor(props) {
       super(props);
@@ -177,15 +177,25 @@ class ProfileScreen extends Component {
                      // containerStyle = {globalstyles.tagSelectorContainer}
                      tags={this.tags}
                      onChange={(selected) => this.setState({ selectedTags: selected })} />
-
-
-                <Text style={globalstyles.description}>Plans</Text>
-                <Text style={globalstyles.descriptionText}>Sample Plans</Text>
-
-                {/* <Button full onPress={() => navigation.popToTop()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button> */}
+               <CardWrapper title="Bundles" titleColor='#dfdfdf' backgroundColor='#f4f3f3'>
+                  <Bundle
+                     name="Deluxe"
+                     description={"7 stories + 1 post + 1 review"}
+                     price={"1 jt"}
+                     />
+                  <Bundle
+                     name="Premium"
+                     description={"4 insta stories + 1 post"}
+                     price={"400 rb"}
+                     />
+                  <Bundle
+                     name="Basic"
+                     description={"1 Story"}
+                     price={"100 rb"}
+                     />
+               </CardWrapper>
                 <Button full onPress={() => this.createTwoButtonAlert()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
 
-         
             </Content>
         
             </ScrollView>
