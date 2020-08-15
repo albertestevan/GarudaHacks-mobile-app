@@ -2,15 +2,17 @@ from django.shortcuts import render
 from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser
 
 from datetime import *
+import hashlib
+import os
+from jwcrypto import jwt, jwk
 
 from .models import User, City, Bundle, Tag, Follower, Price, Gender, File
 from .serializer import UserSerializer, CitySerializer, BundleSerializer, TagSerializer, FollowerSerializer, PriceSerializer, GenderSerializer, FileSerializer
-from .constants import PRICES, FOLLOWERS, CITIES, TAGS, GENDERS
+from .constants import PRICES, FOLLOWERS, CITIES, TAGS, GENDERS, SALT, JWTKey
+from .jwt import verifyToken
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -18,24 +20,105 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny, )
 
     @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
-    def create_profile(self, request, pk=None):
-        if 'name' in request.data and 'imageURL' in request.data and 'instaUsername' in request.data and 'phoneNumber' in request.data and 'businessNumber' in request.data and 'description' in request.data and 'tags' in request.data and 'city' in request.data and 'priceRange' in request.data and 'followers' in request.data:
-            user = User.objects.filter(phone_number=request.data['phoneNumber'])
+    def signup(self, request, pk=None):
+        if 'email' in request.data and 'password' in request.data:
+            user = User.objects.filter(email=request.data['email'])
             if len(user) != 0:
                 response = {'message': 'User existed'}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-           
-            city = City.objects.get(name=request.data['city'])
-            follower = Follower.objects.get(name=request.data['followers'])
-            price = Price.objects.get(name=request.data['priceRange'])
+            print(os.urandom(32))
+            salt = os.urandom(32) # Remember this
+            password = request.data['password']
+
+            passwordKey = hashlib.pbkdf2_hmac(
+                'sha256', # The hash digest algorithm for HMAC
+                password.encode('utf-8'), # Convert the password to bytes
+                str.encode(SALT), # Provide the salt
+                100000 # It is recommended to use at least 100,000 iterations of SHA-256 
+            )
+            newUser = User.objects.create(email=request.data['email'], password=passwordKey)
+            newUser.save()
+            Token = jwt.JWT(header={"alg": "HS256"}, claims=newUser.email)
+            Token.make_signed_token(JWTKey)
+            userToken = Token.serialize()
+            response = {'message': 'Successfully created User', 'token': userToken}
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)     
+
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def signin(self, request, pk=None):
+        if 'email' in request.data and 'password' in request.data:
+            user = User.objects.filter(email=request.data['email'])
+            if len(user) == 0:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            user = user[0]
+            password = request.data['password']
+
+            passwordKey = hashlib.pbkdf2_hmac(
+                'sha256', # The hash digest algorithm for HMAC
+                password.encode('utf-8'), # Convert the password to bytes
+                str.encode(SALT), # Provide the salt
+                100000 # It is recommended to use at least 100,000 iterations of SHA-256 
+            )
+            if str(passwordKey) != str(user.password):
+                response = {'message': 'Invalid password!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            Token = jwt.JWT(header={"alg": "HS256"}, claims=user.email)
+            Token.make_signed_token(JWTKey)
+            userToken = Token.serialize()
+            response = {'message': 'Sign in success', 'token': userToken, 'isVerified': user.isVerified}
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def verify_user(self, request, pk=None):
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        if user.isVerified:
+            response = {'message': 'User Verified!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        if 'name' in request.data and 'imageURL' in request.data and 'instaUsername' in request.data and 'phoneNumber' in request.data and 'businessNumber' in request.data and 'description' in request.data and 'tags' in request.data and 'city' in request.data and 'priceRange' in request.data and 'followers' in request.data and 'gender' in request.data:
+            phone = User.objects.filter(phone_number=request.data['phoneNumber'])
+            if len(phone) != 0:
+                response = {'message': 'Phone number used'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            user.name = request.data['name']
+            user.city = City.objects.get(name=request.data['city'])
+            user.follower = Follower.objects.get(name=request.data['followers'])
+            user.price = Price.objects.get(name=request.data['priceRange'])
+            user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
-            newUser = User.objects.create(name=request.data['name'], phone_number=request.data['phoneNumber'], image_url=request.data['imageURL'], instagram_username=request.data['instaUsername'], business_number=request.data['businessNumber'], description=request.data['description'], city=city, follower=follower, price=price)
             for i in inputTags:
                 tag = Tag.objects.get(name=i)
-                newUser.tags.add(tag)
-            newUser.save()
-            serializer = UserSerializer(newUser, many=False)
-            response = {'message': 'Successfully created User', 'result': serializer.data}
+                user.tags.add(tag)
+            user.description = request.data['description']
+            user.phone_number = request.data['phoneNumber']
+            user.business_number = request.data['businessNumber']
+            user.instagram_username = request.data['instaUsername']
+            user.image_url = request.data['imageURL']
+            user.isVerified = True
+            user.save()
+            payload = {
+                "name": user.name,
+                "imageUrl": user.image_url,
+                "instaUsername": user.instagram_username,
+                "phoneNumber": user.phone_number,
+                "businessNumber": user.business_number,
+                "description": user.description,
+                "city": user.city.name,
+                "priceRange": user.price.name,
+                "followers": user.follower.name,
+                "gender": user.gender.name,
+            }
+            response = {'message': 'Successfully verified User', 'result': payload}
             return Response(response, status=status.HTTP_200_OK)
         else:
             response = {'message': 'Please provide all attributes!'}
@@ -43,35 +126,47 @@ class UserViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def update_profile(self, request, pk=None):
-        if 'name' in request.data and 'imageURL' in request.data and 'instaUsername' in request.data and 'phoneNumber' in request.data and 'businessNumber' in request.data and 'description' in request.data and 'tags' in request.data and 'city' in request.data and 'priceRange' in request.data and 'followers' in request.data:
-            try:
-                user = User.objects.get(phone_number=request.data['phoneNumber'])
-            except User.DoesNotExist:
-                response = {'message': 'User does not exist!'}
-                return Response(response, status=status.HTTP_404_NOT_FOUND)
-            city = City.objects.get(name=request.data['city'])
-            follower = Follower.objects.get(name=request.data['followers'])
-            price = Price.objects.get(name=request.data['priceRange'])
+        user = verifyToken(request.META['HTTP_AUTHORIZATION'])
+        if not user:
+            response = {'message': 'Invalid token! Make sure to include Woing <Token>!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        if 'name' in request.data and 'imageURL' in request.data and 'instaUsername' in request.data and 'phoneNumber' in request.data and 'businessNumber' in request.data and 'description' in request.data and 'tags' in request.data and 'city' in request.data and 'priceRange' in request.data and 'followers' in request.data and 'gender' in request.data:
+            phone = User.objects.filter(phone_number=request.data['phoneNumber'])
+            if len(phone) != 0 and phone[0] != user:
+                response = {'message': 'Phone number used'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
             user.name = request.data['name']
-            user.image_url = request.data['imageURL']
-            user.instagram_username = request.data['instaUsername']
-            user.business_number = request.data['businessNumber']
-            user.description = request.data['description']
-            user.city = city
-            user.follower = follower
-            user.price = price
-            user.tag = []
+            user.city = City.objects.get(name=request.data['city'])
+            user.follower = Follower.objects.get(name=request.data['followers'])
+            user.price = Price.objects.get(name=request.data['priceRange'])
+            user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
             for i in inputTags:
                 tag = Tag.objects.get(name=i)
                 user.tags.add(tag)
+            user.description = request.data['description']
+            user.phone_number = request.data['phoneNumber']
+            user.business_number = request.data['businessNumber']
+            user.instagram_username = request.data['instaUsername']
+            user.image_url = request.data['imageURL']
             user.save()
-            serializer = UserSerializer(user, many=False)
-            response = {'message': 'Successfully created User', 'result': serializer.data}
+            payload = {
+                "name": user.name,
+                "imageUrl": user.image_url,
+                "instaUsername": user.instagram_username,
+                "phoneNumber": user.phone_number,
+                "businessNumber": user.business_number,
+                "description": user.description,
+                "city": user.city.name,
+                "priceRange": user.price.name,
+                "followers": user.follower.name,
+                "gender": user.gender.name,
+            }
+            response = {'message': 'Successfully updated User', 'result': payload}
             return Response(response, status=status.HTTP_200_OK)
         else:
             response = {'message': 'Please provide all attributes!'}
-            return Response(response, status=status.HTTP_400_BAD_REQUEST) 
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)     
 
     @action(detail=False, methods=['GET'])
     def get_profile(self, request, pk=None):
@@ -151,7 +246,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         citiesPayload = CitySerializer(cities, many=True).data
         payload = []
         for i in citiesPayload:
-            payload.append(i["name"])
+            payload.append({
+                "label": i["name"],
+                "value": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK)
     
@@ -175,6 +273,16 @@ class InitialValueViewset(viewsets.ModelViewSet):
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
     
+    @action(detail=False, methods=['GET'])
+    def followers(self, request, pk=None):
+        followers = Follower.objects.all()
+        followersPayload = FollowerSerializer(followers, many=True).data
+        payload = []
+        for i in followersPayload:
+            payload.append(i["name"])
+        response = {'result': payload}
+        return Response(response, status=status.HTTP_200_OK) 
+
     @action(detail=False, methods=['POST'])
     def file(self, request, pk=None):
         file_serializer = FileSerializer(data=request.data)
