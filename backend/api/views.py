@@ -180,14 +180,13 @@ class SearchViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def search(self, request, pk=None):
         user = User.objects.all()
-        result = User.objects.none()
+        result = User.objects.all()
         
         if 'tag' in request.data:
             inputTags = request.data['tag']
             for i in inputTags:
                 tagObject = Tag.objects.get(name=i)
-                query = user.filter(tag__contains=[tagObject])
-                result = result | query
+                result = user.filter(tag__contains=[tagObject])
             
         if 'priceRange' in request.data:
             priceObject = Price.objects.get(name=request.data['priceRange'])
@@ -196,22 +195,22 @@ class SearchViewSet(viewsets.ModelViewSet):
         if 'city' in request.data:
             cityObject = City.objects.get(name=request.data['city'])
             result = result.filter(city=cityObject)
-            
-        limit = request.data['limit']
-        if (count(result) > limit):
-            result = result[:limit]
 
-        userPayload = UserSerializer(result, many=False)
+        limit = request.data['limit']
+        if (result.count() > int(limit)):
+            result = result[:int(limit)]
+
+        userPayload = UserSerializer(result, many=True).data
         for i in userPayload:
             tagsPayload = []
             for j in i["tags"]:
                 tagsPayload.append(Tag.objects.get(id=j).name)
-            i.tags=tagsPayload
-
-            i.city= City.objects.get(id=i["city"]).name
-            i.follower= Follower.objects.get(id=i["follower"]).name
-            i.price= Price.objects.get(id=i["price"]).name
-        
-        response = {'result': userPayload, 'message': 'Successful Filter', 'count': count(result), 'limit': limit}
+            i["tags"] = tagsPayload
+            
+            i["city"] = City.objects.get(id=i["city"]).name
+            i["follower"] = Follower.objects.get(id=i["follower"]).name
+            i["price"] = Price.objects.get(id=i["price"]).name
+            
+        response = {'result': userPayload, 'message': 'Successful Filter', 'count': result.count(), 'limit': limit}
 
         return Response(response, status=status.HTTP_200_OK) 
