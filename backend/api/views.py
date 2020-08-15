@@ -103,6 +103,7 @@ class UserViewSet(viewsets.ModelViewSet):
                     "id": tag.id,
                     "name": tag.name
                 })
+                user.tags.add(tag)
             user.description = request.data['description']
             user.phone_number = request.data['phoneNumber']
             user.business_number = request.data['businessNumber']
@@ -146,12 +147,14 @@ class UserViewSet(viewsets.ModelViewSet):
             user.price = Price.objects.get(name=request.data['priceRange'])
             user.gender = Gender.objects.get(name=request.data['gender'])
             inputTags = request.data['tags']
+            tagsPayload = []
             for i in inputTags:
-                tag = Tag.objects.get(id=name)
+                tag = Tag.objects.get(name=i)
                 tagsPayload.append({
                     "id": tag.id,
                     "name": tag.name
                 })
+                user.tags.add(tag)
             user.description = request.data['description']
             user.phone_number = request.data['phoneNumber']
             user.business_number = request.data['businessNumber']
