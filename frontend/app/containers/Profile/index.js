@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, Button, ScrollView, Linking } from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, ScrollView, Linking, Alert} from 'react-native'
 
-import { Icon, Container, Header, Content, Left, Right } from 'native-base';
+import { Icon, Container, Header, Content, Left, Right , Button} from 'native-base';
 
 import avatar from '../../../assets/avatar.png'
 import ProfileHeader from '../../components/ProfileHeader'
@@ -13,7 +13,7 @@ import TagSelector from 'react-native-tag-selector';
 import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 // name, phone number(login), business number(contact), image_url, description, instagram username, followers, city_id, created_at, updated_at
 
-class  ProfileScreen extends Component {
+class ProfileScreen extends Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -64,8 +64,24 @@ class  ProfileScreen extends Component {
 
     }
 
-   render() {
+    createTwoButtonAlert() {
+        Alert.alert(
+            "Sign Out",
+            "Are you sure?",
+            [
+              
+              {
+                text: "Cancel",
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => this.props.navigation.popToTop() }
+            ],
+            { cancelable: false }
+        );
+    }
 
+   render() {
+        const { navigation } = this.props;
       return (
          <Container>
             <ProfileHeader navigation={this.props.navigation} screenTitle="Profile"/>        
@@ -165,6 +181,10 @@ class  ProfileScreen extends Component {
 
                 <Text style={globalstyles.description}>Plans</Text>
                 <Text style={globalstyles.descriptionText}>Sample Plans</Text>
+
+                {/* <Button full onPress={() => navigation.popToTop()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button> */}
+                <Button full onPress={() => this.createTwoButtonAlert()}><Text style={globalstyles.fullButtonPrimary}>Sign Out</Text></Button>
+
          
             </Content>
         
@@ -179,7 +199,7 @@ const imageStyle = {
    marginTop: 20,
    width: 150,
    height: 150,
-   borderRadius: '100%',
+   borderRadius: 100,
    // borderWidth: 1
 };
 
@@ -201,6 +221,7 @@ const _shadowStyle = {
    }
    })
 };
+
 
 export default ProfileScreen;
 

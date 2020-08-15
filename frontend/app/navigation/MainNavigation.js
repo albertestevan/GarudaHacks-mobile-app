@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import HomeNavigator from './HomeNavigation';
 import SearchNavigator from './SearchNavigation';
-import ProfileNavifator from './ProfileNavigation';
+import MeNavigator from './MeNavigation';
 
 import { TouchableOpacity, View, Text, StyleSheet, AsyncStorage} from "react-native";
 
@@ -48,7 +48,7 @@ class MainNavigator extends Component {
                 } else if (route.name === 'Search') {
                   iconName = 'md-search';
                 }
-                else if (route.name === 'Profile') {
+                else if (route.name === 'Me') {
                   iconName = 'md-person';
                 }
 
@@ -63,7 +63,7 @@ class MainNavigator extends Component {
           >
              <Tabs.Screen name="Home" component={HomeNavigator} />
               <Tabs.Screen name="Search" component={SearchNavigator}/>
-              <Tabs.Screen name="Profile" component={ProfileNavifator}/>
+              <Tabs.Screen name="Me" component={MeNavigator}/>
           </Tabs.Navigator>
       </NavigationContainer>
     );

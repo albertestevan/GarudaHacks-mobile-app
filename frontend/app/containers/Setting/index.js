@@ -3,6 +3,8 @@ import { TouchableOpacity, View, Text, StyleSheet} from 'react-native'
 
 import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base'
 
+import globalstyles from '../../globalstyle';
+
 
 const SettingScreen = ({ navigation }) => {
   
@@ -14,7 +16,13 @@ const SettingScreen = ({ navigation }) => {
             <List listItemPadding={40}>
                 <ListItem onPress={() => {navigation.navigate('EditProfile')}} selected>
                     <Left>
-                        <Text>Edit Profile</Text>
+                        <Content contentContainerStyle={{
+                            padding: 10,
+                            flexDirection: 'row',
+                            }}>
+                            
+                            <Text style={globalstyles.menuText}>Edit Profile</Text>
+                        </Content>
                     </Left>
                     <Right>
                         <Icon name="arrow-forward" />
@@ -24,7 +32,13 @@ const SettingScreen = ({ navigation }) => {
 
                 <ListItem onPress={() => {navigation.navigate('ManagePlans')}} selected>
                     <Left>
-                        <Text>Manage Plans</Text>
+                        <Content contentContainerStyle={{
+                            padding: 10,
+                            flexDirection: 'row',
+                            }}>
+                            
+                            <Text style={globalstyles.menuText}>Manage Plans</Text>
+                        </Content>
                     </Left>
                     <Right>
                         <Icon name="arrow-forward" />

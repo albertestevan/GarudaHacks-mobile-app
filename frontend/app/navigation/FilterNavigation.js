@@ -14,10 +14,10 @@ export default function FilterNavigator({ navigation }) {
 
   return (
         <Stack.Navigator>
-            <Stack.Screen name="Filter" component={FilterScreen}/>
-            <Stack.Screen name="FilterLocation" component={FilterLocationScreen}/>
-            <Stack.Screen name="FilterPriceRange" component={FilterPriceRangeScreen}/>
-            <Stack.Screen name="FilterTags" component={FilterTagsScreen}/>
+            <Stack.Screen name="Filter" component={FilterScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="FilterLocation" component={FilterLocationScreen} options={{ headerTitle: "Filter Location" }}/>
+            <Stack.Screen name="FilterPriceRange" component={FilterPriceRangeScreen} options={{ headerTitle: "Filter Price Range" }}/>
+            <Stack.Screen name="FilterTags" component={FilterTagsScreen} options={{ headerTitle: "Filter Tags" }}/>
         </Stack.Navigator>
   );
 }

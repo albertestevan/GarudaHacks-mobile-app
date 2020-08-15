@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { TouchableOpacity, View, Text, StyleSheet} from 'react-native'
 
 import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base'
 
+import globalstyles from '../../globalstyle'
 
-const FilterScreen = ({ navigation }) => {
+import FilterHeader from '../../components/FilterHeader'
+
+
+class FilterScreen extends Component {
   
+render() {
+    const { navigation } = this.props;
    return (
       <Container>
-
+          <FilterHeader navigation={navigation}/>
          <Content contentContainerStyle={{
-         }}>
+         }}
+         >
             <List listItemPadding={40}>
                 <ListItem onPress={() => navigation.navigate('FilterLocation')} selected>
                     <Left>
@@ -58,15 +65,21 @@ const FilterScreen = ({ navigation }) => {
                   </Right>
                 </ListItem>
             </List>
+            <Button full><Text style={styles.seeChangesButton}>See Results</Text></Button>
 
          </Content>
       </Container>
    )
+    };   
 }
 export default FilterScreen;
 
 const styles = StyleSheet.create({
     menuText:{
+        fontWeight: 'bold',
+    },
+    seeChangesButton:{
+        color: '#FFFFFF',
         fontWeight: 'bold',
     }
 });

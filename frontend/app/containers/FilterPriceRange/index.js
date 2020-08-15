@@ -4,6 +4,7 @@ import { TouchableOpacity, View, Text, StyleSheet, Button} from 'react-native';
 import { Icon, Container, Header, Content, Left, Right, List, ListItem} from 'native-base';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LoadingScreen from '../Loading';
 
 
 
@@ -12,19 +13,30 @@ class FilterPriceRangeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            data: [],
+            isLoading: true,
         };
+      }
+
+      componentDidMount() {
+        fetch('http://165.227.25.15/api/prices/')
+          .then((response) => response.json())
+          .then((json) => {
+            this.setState({ data: json.result });
+          })
+          .catch((error) => console.error(error))
+          .finally(() => {
+            this.setState({ isLoading: false });
+          });
       }
     
 
     render() {
-        const menuList = 
-        [
-            //Haven't called api for city list
-            "30.000 - 99.000",
-            "100.000 - 299.000",
-            "300.000 - 599.000",
-            "600.000 - 1.000.000",
-        ]
+        const { data, isLoading } = this.state;
+
+        if (isLoading) {
+            return(<LoadingScreen/>)
+        }
         return (
             <Container>
 
@@ -33,20 +45,20 @@ class FilterPriceRangeScreen extends Component {
                 }}>
             
             <List>
-                {menuList.map(menu => (
-                <ListItem onPress={() => this.setState({ [menu]: !this.state[menu]})} selected>
+                {data.map(price => (
+                <ListItem onPress={() => this.setState({ [price]: !this.state[price]})} selected>
                   <Left>
                     <Content contentContainerStyle={{
                           padding: 10,
                           flexDirection: 'row',
                         }}>
-                        {this.state[menu] ? (
+                        {this.state[price] ? (
                         <Ionicons name="md-checkmark" size={20} style={styles.pickedText}/>
                         ) : null}
 
-                        {this.state[menu] ? (
-                        <Text style={styles.pickedText}>{menu}</Text>
-                        ) : <Text style={styles.regularText}>{menu}</Text>}
+                        {this.state[price] ? (
+                        <Text style={styles.pickedText}>{price}</Text>
+                        ) : <Text style={styles.regularText}>{price}</Text>}
                     </Content>
                   </Left>
                   <Right>
