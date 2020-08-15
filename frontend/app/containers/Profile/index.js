@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, Image, StyleSheet, Animated, Segment, Button, ScrollView } from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Segment, Button, ScrollView, Linking } from 'react-native'
 
 import { Icon, Container, Header, Content, Left, Right } from 'native-base';
 
@@ -105,17 +105,23 @@ class  ProfileScreen extends Component {
                      </Animated.Text>
                      </Content>
                   </View>
-                  <View style={globalstyles.tabRow}>
+                  <View style={globalstyles.tabRow} onPress={() => this.props.navigation.navigate('Setting')}>
+                     {/* <Button on>
+
+                     </Button> */}
                      <Content 
                      contentContainerStyle={{ 
                         flexDirection: 'row',
                      }}
-                     >
-                     <Entypo name="instagram" size={16} color="#808080" />
                      
-                     <Animated.Text style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
-                        jessicaHartanto
-                     </Animated.Text>
+                     >
+                        {/* <View onPress={() => this.props.navigation.navigate('Setting')}> */}
+                           <Entypo name="instagram" size={16} color="#808080" onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} />
+                           
+                           <Animated.Text onPress={() => Linking.openURL('https://instagram.com/gabrielashirley')} style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
+                              jessicaHartanto
+                           </Animated.Text>
+                        {/* </View> */}
                      </Content>
                   </View>
                </Content>
