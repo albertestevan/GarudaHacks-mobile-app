@@ -1,3 +1,6 @@
 backend/**/__pycache__/*
 backend/**/*.pyc
 *.pyc
+**/migrations/*
+!**/migrations/__init__.py
+backend/media/*

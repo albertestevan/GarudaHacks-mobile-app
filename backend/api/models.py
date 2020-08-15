@@ -42,6 +42,7 @@ class User(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
     follower = models.ForeignKey(Follower, on_delete=models.CASCADE, null=True)
     price = models.ForeignKey(Price, on_delete=models.CASCADE, null=True)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
     tags =  models.ManyToManyField(Tag)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -55,4 +56,10 @@ class Bundle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+class File(models.Model):
+    file = models.FileField(blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.file.name

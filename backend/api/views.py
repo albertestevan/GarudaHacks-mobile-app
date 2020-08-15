@@ -8,8 +8,8 @@ from rest_framework.parsers import FileUploadParser
 
 from datetime import *
 
-from .models import User, City, Bundle, Tag, Follower, Price, Gender
-from .serializer import UserSerializer, CitySerializer, BundleSerializer, TagSerializer, FollowerSerializer, PriceSerializer, GenderSerializer
+from .models import User, City, Bundle, Tag, Follower, Price, Gender, File
+from .serializer import UserSerializer, CitySerializer, BundleSerializer, TagSerializer, FollowerSerializer, PriceSerializer, GenderSerializer, FileSerializer
 from .constants import PRICES, FOLLOWERS, CITIES, TAGS, GENDERS
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -138,7 +138,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         tagsPayload = TagSerializer(tags, many=True).data
         payload = []
         for i in tagsPayload:
-            payload.append(i["name"])
+            payload.append({
+                "id": i["id"],
+                "name": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
     
@@ -171,6 +174,16 @@ class InitialValueViewset(viewsets.ModelViewSet):
             payload.append(i["name"])
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
+    
+    @action(detail=False, methods=['POST'])
+    def file(self, request, pk=None):
+        file_serializer = FileSerializer(data=request.data)
+
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SearchViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
