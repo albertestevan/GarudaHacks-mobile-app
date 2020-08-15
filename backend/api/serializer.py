@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, City, Bundle, Tag, Follower, Price
+from .models import User, City, Bundle, Tag, Follower, Price, Gender
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,5 +30,10 @@ class FollowerSerializer(serializers.ModelSerializer):
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Price
+        fields = '__all__'
+
+class GenderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Gender
         fields = '__all__'
 
