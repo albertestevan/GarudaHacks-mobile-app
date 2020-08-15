@@ -138,7 +138,10 @@ class InitialValueViewset(viewsets.ModelViewSet):
         tagsPayload = TagSerializer(tags, many=True).data
         payload = []
         for i in tagsPayload:
-            payload.append(i["name"])
+            payload.append({
+                "id": i["id"],
+                "name": i["name"]
+            })
         response = {'result': payload}
         return Response(response, status=status.HTTP_200_OK) 
     
