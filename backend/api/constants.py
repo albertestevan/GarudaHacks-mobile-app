@@ -117,6 +117,25 @@ CITIES = [
 
 TAGS = [
     ("1", "TECHNOLOGIES"),
+    ("2", "AUTOMOTIVE"),
+    ("3", "BEAUTY"),
+    ("4", "FOOD"),
+    ("5", "FASHION"),
+    ("6", "TRAVEL"),
+    ("7", "DIET"),
+    ("8", "FITNESS"),
+    ("9", "FINANCIAL"),
+    ("10", "EDUCATION"),
+    ("11", "ENTERTAINMENT"),
+    ("12", "SCIENCE"),
+    ("13", "GAMES"),
+    ("14", "COMEDY"),
+    ("15", "FILM"),
+    ("16", "MUSIC"),
+    ("17", "ALCOHOL"),
+    ("18", "ANIMAL"),
+    ("19", "PLANT"),
+    ("20", "FAMILY"),
 ]
 
 GENDERS = [
