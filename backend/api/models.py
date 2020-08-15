@@ -34,8 +34,10 @@ class Gender(models.Model):
 
 class User(models.Model):
     name = models.CharField(max_length=30)
+    email = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=100,)
     image_url = models.CharField(max_length=300)
-    instagram_username= models.CharField(max_length=30, unique=True)
+    instagram_username = models.CharField(max_length=30, unique=True)
     phone_number = models.CharField(max_length=30, unique=True)
     business_number = models.CharField(max_length=30, blank=True, null=True)
     description = models.TextField(max_length=500, blank=True, null=True)
@@ -44,6 +46,7 @@ class User(models.Model):
     price = models.ForeignKey(Price, on_delete=models.CASCADE, null=True)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
     tags =  models.ManyToManyField(Tag)
+    isVerified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

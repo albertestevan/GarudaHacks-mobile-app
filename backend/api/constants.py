@@ -1,3 +1,4 @@
+from jwcrypto import jwk
 
 FOLLOWERS = [
     ("1", "~ 1k"),
@@ -6,7 +7,7 @@ FOLLOWERS = [
     ("4", "~ 50k"),
     ("5", "~ 100k"),
     ("6", "~ 500k"),
-    ("7", "> 1M "),
+    ("7", "> 1M"),
 ]
 
 PRICES = [
@@ -124,3 +125,7 @@ GENDERS = [
     ("2", "FEMALE"),
     ("3", "OTHER"),
 ]
+
+SALT = "WOING"
+
+JWTKey = jwk.JWK(**{"k":"bu5Lqg3k7UeXz8xd0D4pHGSClHmEt7NqBc-AQUPbDVQ","kty":"oct"})
