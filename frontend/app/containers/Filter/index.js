@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { TouchableOpacity, View, Text, StyleSheet} from 'react-native'
 
 import { Icon, Container, Content, Left, Right, Button, List, ListItem} from 'native-base'
 
 
-const FilterScreen = ({ navigation }) => {
+class FilterScreen extends Component {
   
+render() {
+    const { navigation } = this.props;
    return (
       <Container>
 
@@ -62,6 +64,7 @@ const FilterScreen = ({ navigation }) => {
          </Content>
       </Container>
    )
+    };   
 }
 export default FilterScreen;
 

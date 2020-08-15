@@ -139,7 +139,7 @@ const imageStyle = {
    marginTop: 20,
    width: 150,
    height: 150,
-   borderRadius: '100%',
+   borderRadius: 100,
    // borderWidth: 1
 };
 

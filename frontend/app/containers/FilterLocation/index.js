@@ -17,6 +17,8 @@ class FilterLocationScreen extends Component {
     
 
     render() {
+
+        const { navigation } = this.props;
         const menuList = 
         [
             //Haven't called api for city list
