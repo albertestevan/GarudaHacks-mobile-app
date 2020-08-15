@@ -12,7 +12,7 @@ export default function SearchNavigator({ navigation }) {
 
   return (
         <Stack.Navigator>
-            <Stack.Screen name="Setting" component={SearchScreen} options={{ headerShown: false }}/>
+            <Stack.Screen name="Search" component={SearchScreen} options={{ headerShown: false }}/>
             <Stack.Screen name="Filter" component={FilterNavigator}/>
         </Stack.Navigator>
   );

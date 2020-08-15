@@ -12,32 +12,50 @@ const FilterScreen = ({ navigation }) => {
          <Content contentContainerStyle={{
          }}>
             <List listItemPadding={40}>
-                <ListItem onPress={() => {navigation.navigate('FilterLocation')}} selected>
+                <ListItem onPress={() => navigation.navigate('FilterLocation')} selected>
                     <Left>
-                        <Text>Location</Text>
-                    </Left>
-                    <Right>
-                        <Icon name="arrow-forward" />
-                    </Right>
+                    <Content contentContainerStyle={{
+                          padding: 10,
+                          flexDirection: 'row',
+                        }}>
+                        
+                        <Text style={styles.menuText}>Location</Text>
+                    </Content>
+                  </Left>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
                 </ListItem>
             
 
                 <ListItem onPress={() => {navigation.navigate('FilterPriceRange')}} selected>
-                    <Left>
-                        <Text>Price Range</Text>
-                    </Left>
-                    <Right>
-                        <Icon name="arrow-forward" />
-                    </Right>
+                <Left>
+                    <Content contentContainerStyle={{
+                          padding: 10,
+                          flexDirection: 'row',
+                        }}>
+                        
+                        <Text style={styles.menuText}>Price Range</Text>
+                    </Content>
+                  </Left>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
                 </ListItem>
 
                 <ListItem onPress={() => {navigation.navigate('FilterTags')}} selected>
-                    <Left>
-                        <Text>Tags</Text>
-                    </Left>
-                    <Right>
-                        <Icon name="arrow-forward" />
-                    </Right>
+                <Left>
+                    <Content contentContainerStyle={{
+                          padding: 10,
+                          flexDirection: 'row',
+                        }}>
+                        
+                        <Text style={styles.menuText}>Tags</Text>
+                    </Content>
+                  </Left>
+                  <Right>
+                    <Icon name="arrow-forward" />
+                  </Right>
                 </ListItem>
             </List>
 
@@ -46,3 +64,9 @@ const FilterScreen = ({ navigation }) => {
    )
 }
 export default FilterScreen;
+
+const styles = StyleSheet.create({
+    menuText:{
+        fontWeight: 'bold',
+    }
+});
