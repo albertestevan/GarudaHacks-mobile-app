@@ -10,7 +10,8 @@ import globalstyles from '../../globalstyle';
 
 import TagSelector from 'react-native-tag-selector';
 
-
+import { Ionicons, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
+// name, phone number(login), business number(contact), image_url, description, instagram username, followers, city_id, created_at, updated_at
 
 class  ProfileScreen extends Component {
    constructor(props) {
@@ -79,8 +80,11 @@ class  ProfileScreen extends Component {
                      source={avatar}
                   />
                </View>
-               <View style={globalstyles.center}>
-                  <Text style={globalstyles.name}>Jessica Hartanto Estevan</Text>
+               <View style={[globalstyles.center]}>
+                  <Content contentContainerStyle={[globalstyles.row, globalstyles.marginBottomSm]}>
+                     <MaterialCommunityIcons name="gender-female" size={26} color="#ff1694" />
+                     <Text style={globalstyles.name}>Jessica Hartanto Estevan</Text>
+                  </Content>
                </View>
                <Content 
                contentContainerStyle={{ 
@@ -88,6 +92,36 @@ class  ProfileScreen extends Component {
                   marginBottom: 0
                }}
                >
+                  <View style={globalstyles.tabRowLoc}>
+                     <Content 
+                     contentContainerStyle={{ 
+                        flexDirection: 'row',
+                     }}
+                     >
+                     <Entypo name="location-pin" size={16} color="#808080" />
+                     
+                     <Animated.Text style={globalstyles.tabLabelText}>
+                        Surabaya
+                     </Animated.Text>
+                     </Content>
+                  </View>
+                  <View style={globalstyles.tabRow}>
+                     <Content 
+                     contentContainerStyle={{ 
+                        flexDirection: 'row',
+                     }}
+                     >
+                     <Entypo name="instagram" size={16} color="#808080" />
+                     
+                     <Animated.Text style={[globalstyles.tabLabelText, globalstyles.marginLeftSm]}>
+                        jessicaHartanto
+                     </Animated.Text>
+                     </Content>
+                  </View>
+               </Content>
+               <Content 
+                  contentContainerStyle={[globalstyles.row, globalstyles.marginBottomSm]}
+                  >
                   <View style={globalstyles.tabRow}>
                      <Animated.Text style={globalstyles.tabLabelNumber}>
                         1.1K
