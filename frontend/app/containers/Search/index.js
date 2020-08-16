@@ -30,35 +30,15 @@ class SearchScreen extends Component {
     };
   }
 
-  componentDidMount = async () => {
-    //  return await fetch(`http://165.227.25.15/api/search/search/`, {
-    //    method: 'POST',
-    //    body: JSON.stringify({
-    //      limit: '14',
-    //      tags: ['AUTOMOTIVE', 'BEAUTY', 'EDUCATION'],
-    //    }),
-    //    headers: {
-    //      'Content-Type': 'application/json',
-    //    },
-    //  })
-    //    .catch(function (error) {
-    //      console.log('There has been a problem with your fetch operation: ');
-    //      throw error;
-    //    })
-    //    .then(response => response.json())
-    //    .then(responseJson => {
-    //      console.log('Search');
-    //      console.log(responseJson.result);
-    //      this.setState({ users: responseJson });
-    //    });
-  };
-
-  searchSubmit = () => {
+  componentDidMount = () => {
     return fetch(`http://165.227.25.15/api/search/search/`, {
       method: 'POST',
       body: JSON.stringify({
         limit: '14',
-        search: this.state.searchBarInput,
+        tags: [],
+        priceRange: [],
+        city: [],
+        search: '',
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -71,6 +51,30 @@ class SearchScreen extends Component {
       .then(response => response.json())
       .then(responseJson => {
         if (responseJson) this.setState({ userArray: responseJson.result });
+      });
+  };
+
+  searchSubmit = () => {
+    return fetch(`http://165.227.25.15/api/search/search/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        limit: '14',
+        tags: [],
+        priceRange: [],
+        city: [],
+        search: this.state.searchBarInput,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .catch(function (error) {
+        console.log('There has been a problem with your fetch operation: ');
+        throw error;
+      })
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState({ userArray: responseJson.result });
       });
   };
 
@@ -106,10 +110,11 @@ class SearchScreen extends Component {
               paddingTop: 10,
             }}
           >
-            {this.state.userArray.map((user, i) => {
+            {this.state.userArray.map(user => {
               return (
                 <Card
-                  image={String(user.image_url)}
+                  key={user.id}
+                  imageURL={user.image_url}
                   width={width}
                   name={user.name}
                   location={user.city}
