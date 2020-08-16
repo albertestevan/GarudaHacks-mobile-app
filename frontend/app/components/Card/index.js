@@ -58,11 +58,21 @@ const Card = props => {
             marginLeft: cardMargin,
             position: 'absolute',
             backgroundColor: 'transparent',
+            
             ...baseStyle,
         },
         text:{
             marginLeft: 5,
-            fontSize: cardWidth *0.08
+            fontSize: cardWidth *0.08,
+        },
+        textWrapper:{
+            // marginLeft: 5,
+            // fontSize: cardWidth *0.08,
+            backgroundColor: '#ccc',
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
+            borderTopRightRadius:5,
+            borderTopLeftRadius:5
         }
     });
 
@@ -97,9 +107,11 @@ const Card = props => {
                         source={imageURL ? { uri: imageURL } : avatar}
                     />
                     <View style={styles.imgOver}>
-                        <Text style={styles.text}>{name}</Text>
-                        <Text style={styles.text}>{location}</Text>
-                        <Text style={styles.text}>{price}</Text>
+                        <View style={styles.textWrapper}>
+                            <Text style={styles.text}>{name}</Text>
+                            <Text style={styles.text}>{location}</Text>
+                            <Text style={styles.text}>{price}</Text>
+                        </View>
                     </View>
                 </View>
 
