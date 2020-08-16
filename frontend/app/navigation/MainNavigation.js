@@ -61,7 +61,6 @@ class MainNavigator extends Component {
               inactiveTintColor: 'gray',
             }}
           >
-             <Tabs.Screen name="Home" component={HomeNavigator} />
               <Tabs.Screen name="Search" component={SearchNavigator}/>
               <Tabs.Screen name="Me" component={MeNavigator}/>
           </Tabs.Navigator>
