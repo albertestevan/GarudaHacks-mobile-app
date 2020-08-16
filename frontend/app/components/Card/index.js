@@ -19,15 +19,11 @@ const Card = props => {
     const {
         style,
         onPress,
-        borderRadius,
-        image,
         name,
         location,
         price,
-        iconDisable,
-        containerHeight,
         width,
-        height
+        imageURL
     } = props;
 
     const cardWidth = width * 0.45;
@@ -98,7 +94,7 @@ const Card = props => {
                 <View style={styles.imgWrapper}>
                     <Image
                         style={styles.img}
-                        source={avatar}
+                        source={imageURL ? { uri: imageURL } : avatar}
                     />
                     <View style={styles.imgOver}>
                         <Text style={styles.text}>{name}</Text>

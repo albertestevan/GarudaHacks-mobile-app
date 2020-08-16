@@ -374,32 +374,34 @@ class SearchViewSet(viewsets.ModelViewSet):
         user = User.objects.filter(isVerified=True)
         result = User.objects.none()
         
-        if 'tag' in request.data:
+        if 'tag' in request.data and request.data['tag'] != []:
             inputTags = request.data['tag']
             for i in inputTags:
                 tagObject = Tag.objects.get(name=i)
                 result = result | user.filter(tag__contains=[tagObject])
             user = result
 
-        if 'priceRange' in request.data:
+        if 'priceRange' in request.data and request.data['priceRange'] != []:
             priceRanges = request.data['priceRange']
             for i in priceRanges:
                 priceObject = Price.objects.get(name=i)
                 result = result | user.filter(price=priceObject)
             user = result
 
-        if 'city' in request.data:
+        if 'city' in request.data and request.data['city'] != []:
             cities = request.data['city']
             for i in cities:
                 cityObject = City.objects.get(name=i)
                 result = result | user.filter(city=cityObject)
             user = result
 
-        if 'search' in request.data:
+        if 'search' in request.data and request.data['search'] != "":
             result = result | User.objects.filter(name__search=request.data['search'])
             result = result | user.filter(description__search=request.data['search'])
             user = result
-            
+        
+        if request.data['tags'] == [] and request.data['priceRange'] == [] and request.data['city'] == [] and request.data['search'] == "":
+            result = User.objects.filter(isVerified=True)
         limit = request.data['limit']
         if (result.count() > int(limit)):
             result = result[:int(limit)]
