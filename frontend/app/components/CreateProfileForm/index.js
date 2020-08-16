@@ -1,6 +1,6 @@
 import React , { Component, useState } from 'react';
 import Expo from 'expo';
-import { View , Picker, StyleSheet, Image} from 'react-native';
+import { View , Picker, StyleSheet, Image, Alert} from 'react-native';
 import { Container, Item, Header, Body, Content, Title, Button, Text } from 'native-base';
 
 import LoadingScreen from '../../containers/Loading';
@@ -17,6 +17,7 @@ import globalstyles from '../../globalstyle';
 
 import * as SecureStore from 'expo-secure-store';
 import Media from '../../components/Media';
+
 
 import avatar from "../../../assets/avatar.png";
 const validate = values => {
@@ -58,6 +59,7 @@ export default class CreateProfileForm extends Component {
   }
 
   ImageHandler = async()=>{
+    if (!this.state.image) return ""
     const form = new FormData();
     form.append("file", {uri: this.state.image, name: 'profileImage.jpg', type: 'image/jpeg'})
 
@@ -110,7 +112,7 @@ async componentDidMount() {
       fetch('http://165.227.25.15/api/genders/')
       .then((response) => response.json())
       .then((json) => {
-        this.setState({ gender: json.result });
+        this.setState({ genders: json.result });
       })
       .catch((error) => console.error(error))
 
@@ -147,6 +149,21 @@ async componentDidMount() {
 
     const token = await SecureStore.getItemAsync('userToken')
 
+    const body = JSON.stringify({
+      name: profile.name,
+      imageURL: imageUrl,
+      instaUsername: profile.instaUsername,
+      phoneNumber: profile.phoneNumber,
+      businessNumber: profile.businessNumber,
+      description: profile.description,
+      tags: profile.tags,
+      city: profile.city,
+      priceRange: profile.priceRange,
+      followers: profile.followers,
+      gender: profile.gender
+    })
+
+    console.log("body", body)
     await fetch('http://165.227.25.15/api/user/verify_user/', {
             method: 'POST',
             headers: {
@@ -154,28 +171,23 @@ async componentDidMount() {
                 'Authorization'    : `Woing ${token}`,
 
             },
-            body: JSON.stringify({
-              name: profile.name,
-              imageURL: profile.imageURL,
-              instaUsername: profile.instaUsername,
-              phoneNumber: profile.phoneNumber,
-              businessNumber: profile.businessNumber,
-              description: profile.description,
-              tags: profile.tags,
-              city: profile.city,
-              priceRange: profile.priceRange,
-              followers: profile.followers,
-              gender: profile.gender
-            })
+            body: body
           })
         .then((response) => response.json())
-        .then((responseJson) => {
+        .then(async(responseJson) => {
             console.log(responseJson);
+            action = {
+              token : token,
+              isVerified: true
+            }
             this.setState({ isLoading: false });
+        const token = await SecureStore.setItemAsync('userInfo', JSON.stringify({isVerified: true, token: token}))
         })
         .catch((error) => {
             console.error(error);
+            this.props.navigation.navigate('me')
             this.setState({ isLoading: false });
+            throw new Alert(error.message);
         });
   }
 
@@ -184,6 +196,7 @@ async componentDidMount() {
   }
 
   render(){
+
      const { handleSubmit, reset } = this.props;
 
      if (this.state.isLoading) {
