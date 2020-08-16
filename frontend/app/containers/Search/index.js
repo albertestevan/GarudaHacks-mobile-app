@@ -88,6 +88,7 @@ class  SearchScreen extends Component {
                }}
                >
                   <Card
+                     imageURL={'http://165.227.25.15/media/profileImage_1LbNjZ0.jpg'}
                      width={width}
                      name={"woing"}
                      location={"jakataks"}

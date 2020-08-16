@@ -169,7 +169,6 @@ async componentDidMount() {
             headers: {
                 'Content-Type' : `application/json`,
                 'Authorization'    : `Woing ${token}`,
-
             },
             body: body
           })

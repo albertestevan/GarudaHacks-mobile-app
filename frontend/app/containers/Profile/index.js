@@ -119,13 +119,8 @@ class ProfileScreen extends Component {
 
    render() {
         const { navigation } = this.props;
-      //   console.log("stateprof", this.state)
-      // if (this.state.initialProfile){
         const {businessNumber, city, description, followers, gender, imageURL, instaUsername, name, priceRange, phoneNumber, tags} = this.state.initialProfile;
-      // }
         console.log("tags", this.state.initialProfile)
-      //   console.log("this tags", this.tags)
-
      if (this.state.isLoading || this.state.initialProfile == undefined || this.state.initialProfile =='Message') {
       return <LoadingScreen />;
     }
@@ -151,7 +146,7 @@ class ProfileScreen extends Component {
                <View style={_shadowStyle}>
                   <Image
                      style={imageStyle}
-                     source={avatar}
+                     source={{uri: imageURL} || avatar}
                   />
                </View>
                <View style={[globalstyles.center]}>
