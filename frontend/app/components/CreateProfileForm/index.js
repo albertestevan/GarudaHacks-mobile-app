@@ -299,23 +299,20 @@ async componentDidMount() {
             <Text></Text>
           <Button block primary onPress= {() => this.onSubmit({
             name: this.state.name,
-            imageURL: this.state.imageURL,
             instaUsername: this.state.instaUsername,
             phoneNumber: this.state.phoneNumber,
             businessNumber: this.state.businessNumber,
             description: this.state.description,
             // tags: this.state.tags,
-            tags: this.state.tags,
             city: this.state.city,
+            tags: ["AUTOMOTIVE", "BEAUTY"],
             priceRange: this.state.priceRange,
             followers: this.state.followers,
-            // gender: this.state.gender
             gender: this.state.gender
-
           })} 
-          // disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
-          //   !this.state.businessNumber || !this.state.description || !this.state.tags || !this.state.city || !this.state.priceRange || !this.state.followers
-          // }
+          disabled={ !this.state.name || !this.state.instaUsername || !this.state.phoneNumber ||
+            !this.state.businessNumber || !this.state.description || !this.state.city || !this.state.priceRange || !this.state.followers || !this.state.gender
+          }
           >
             <Text>Submit</Text>
           </Button>
