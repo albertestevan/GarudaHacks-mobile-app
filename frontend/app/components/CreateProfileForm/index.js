@@ -184,7 +184,7 @@ async componentDidMount() {
         })
         .catch((error) => {
             console.error(error);
-            this.props.navigation.navigate('me')
+            // this.props.navigation.navigate('me')
             this.setState({ isLoading: false });
             throw new Alert(error.message);
         });
@@ -305,12 +305,12 @@ async componentDidMount() {
             businessNumber: this.state.businessNumber,
             description: this.state.description,
             // tags: this.state.tags,
-            tags: ["AUTOMOTIVE", "BEAUTY"],
+            tags: this.state.tags,
             city: this.state.city,
             priceRange: this.state.priceRange,
             followers: this.state.followers,
             // gender: this.state.gender
-            gender: "MALE"
+            gender: this.state.gender
 
           })} 
           // disabled={ !this.state.name ||  !this.state.imageURL || !this.state.instaUsername || !this.state.phoneNumber ||
