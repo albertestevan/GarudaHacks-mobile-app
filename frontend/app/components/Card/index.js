@@ -62,6 +62,7 @@ const Card = props => {
             ...baseStyle,
         },
         text:{
+            fontFamily: 'Roboto',
             marginLeft: 5,
             fontSize: cardWidth *0.08,
         },
