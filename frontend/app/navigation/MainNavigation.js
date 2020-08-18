@@ -57,7 +57,7 @@ class MainNavigator extends Component {
               },
             })}
             tabBarOptions={{
-              activeTintColor: 'blue',
+              activeTintColor: '#5eac96',
               inactiveTintColor: 'gray',
             }}
           >

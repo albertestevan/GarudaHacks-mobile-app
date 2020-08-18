@@ -71,8 +71,6 @@ const Card = props => {
             backgroundColor: '#ccc',
             borderBottomLeftRadius: 15,
             borderBottomRightRadius: 15,
-            borderTopRightRadius:5,
-            borderTopLeftRadius:5
         }
     });
 

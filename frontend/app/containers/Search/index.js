@@ -13,6 +13,8 @@ import {
 } from 'native-base';
 import HeaderHamburgerMenu from '../../components/HeaderHamburgerMenu';
 
+import LoadingScreen from '../../containers/Loading';
+
 // import { Card } from "@paraboly/react-native-card";
 import Card from '../../components/Card';
 
@@ -27,6 +29,7 @@ class SearchScreen extends Component {
       searchBarInput: '',
       showModal: false,
       userArray: [],
+      isLoading: false,
     };
   }
 
@@ -55,6 +58,7 @@ class SearchScreen extends Component {
   };
 
   searchSubmit = () => {
+    this.setState({ isLoading: true });
     return fetch(`http://165.227.25.15/api/search/search/`, {
       method: 'POST',
       body: JSON.stringify({
@@ -70,16 +74,21 @@ class SearchScreen extends Component {
     })
       .catch(function (error) {
         console.log('There has been a problem with your fetch operation: ');
+        this.setState({ isLoading: false });
         throw error;
       })
       .then(response => response.json())
       .then(responseJson => {
-        this.setState({ userArray: responseJson.result });
+        this.setState({ userArray: responseJson.result, isLoading: false });
       });
   };
 
   render() {
     const { navigation } = this.props;
+
+    const { isLoading } = this.state;
+
+
     return (
       <Container>
         <Header searchBar rounded>
@@ -98,7 +107,8 @@ class SearchScreen extends Component {
             <MaterialCommunityIcons name="filter-variant" size={30} />
           </Button>
         </Header>
-        <ScrollView>
+        {!isLoading ?
+        (<ScrollView>
           <Content
             contentContainerStyle={{
               flex: 1,
@@ -123,7 +133,11 @@ class SearchScreen extends Component {
               );
             })}
           </Content>
-        </ScrollView>
+        </ScrollView>)
+        : (
+          <LoadingScreen/>
+        )
+          }
       </Container>
     );
   }
