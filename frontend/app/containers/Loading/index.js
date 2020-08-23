@@ -15,7 +15,7 @@ const LoadingScreen = () => {
          scrollEnabled={false}
          >
 
-         <Spinner color='blue' />
+         <Spinner color='orange' />
 
          </Content>
       </Container>

@@ -1,7 +1,7 @@
 {
   "expo": {
     "entryPoint": "./app/App.js",
-    "name": "Dorsé",
+    "name": "Dorsey",
     "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",

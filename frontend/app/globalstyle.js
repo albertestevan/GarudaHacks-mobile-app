@@ -21,6 +21,9 @@ export default globalstyles = StyleSheet.create({
     orange:{
       color : '#FF9800',
     },
+    paletteOrange: {
+      color : '#fc7023',
+    },
     name: {
       fontSize: 24
    },
